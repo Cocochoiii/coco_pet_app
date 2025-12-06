@@ -1,0 +1,495 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		012 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 112 /* Assets.xcassets */; };
+		21BA487C2EE3695A00FFF2F8 /* Fifi.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA486A2EE3695A00FFF2F8 /* Fifi.mp4 */; };
+		21BA487D2EE3695A00FFF2F8 /* Tata.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48762EE3695A00FFF2F8 /* Tata.mp4 */; };
+		21BA487E2EE3695A00FFF2F8 /* Tutu.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48782EE3695A00FFF2F8 /* Tutu.mp4 */; };
+		21BA487F2EE3695A00FFF2F8 /* Nana.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48712EE3695A00FFF2F8 /* Nana.mp4 */; };
+		21BA48802EE3695A00FFF2F8 /* Dudu.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48682EE3695A00FFF2F8 /* Dudu.mp4 */; };
+		21BA48812EE3695A00FFF2F8 /* Ergou.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48692EE3695A00FFF2F8 /* Ergou.mp4 */; };
+		21BA48822EE3695A00FFF2F8 /* Oscar.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48742EE3695A00FFF2F8 /* Oscar.mp4 */; };
+		21BA48832EE3695A00FFF2F8 /* Chacha.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48662EE3695A00FFF2F8 /* Chacha.mp4 */; };
+		21BA48842EE3695A00FFF2F8 /* chouchou.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48672EE3695A00FFF2F8 /* chouchou.mp4 */; };
+		21BA48852EE3695A00FFF2F8 /* Toast.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48772EE3695A00FFF2F8 /* Toast.mp4 */; };
+		21BA48862EE3695A00FFF2F8 /* Haha.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA486B2EE3695A00FFF2F8 /* Haha.mp4 */; };
+		21BA48872EE3695A00FFF2F8 /* Jiujiu.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA486C2EE3695A00FFF2F8 /* Jiujiu.mp4 */; };
+		21BA48882EE3695A00FFF2F8 /* Mia_cat.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA486F2EE3695A00FFF2F8 /* Mia_cat.mp4 */; };
+		21BA48892EE3695A00FFF2F8 /* XiaBao.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48792EE3695A00FFF2F8 /* XiaBao.mp4 */; };
+		21BA488A2EE3695A00FFF2F8 /* Bibi.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48642EE3695A00FFF2F8 /* Bibi.mp4 */; };
+		21BA488B2EE3695A00FFF2F8 /* Neon.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48722EE3695A00FFF2F8 /* Neon.mp4 */; };
+		21BA488C2EE3695A00FFF2F8 /* Xianbei.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA487A2EE3695A00FFF2F8 /* Xianbei.mp4 */; };
+		21BA488D2EE3695A00FFF2F8 /* Yaya.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA487B2EE3695A00FFF2F8 /* Yaya.mp4 */; };
+		21BA488E2EE3695A00FFF2F8 /* Nova.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48732EE3695A00FFF2F8 /* Nova.mp4 */; };
+		21BA488F2EE3695A00FFF2F8 /* Richard.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48752EE3695A00FFF2F8 /* Richard.mp4 */; };
+		21BA48902EE3695A00FFF2F8 /* Loki.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA486D2EE3695A00FFF2F8 /* Loki.mp4 */; };
+		21BA48912EE3695A00FFF2F8 /* Mia_dog.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48702EE3695A00FFF2F8 /* Mia_dog.mp4 */; };
+		21BA48922EE3695A00FFF2F8 /* Caicai.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA48652EE3695A00FFF2F8 /* Caicai.mp4 */; };
+		21BA48932EE3695A00FFF2F8 /* Meimei.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 21BA486E2EE3695A00FFF2F8 /* Meimei.mp4 */; };
+		21BA4B872EE4179100FFF2F8 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B852EE4179100FFF2F8 /* SplashScreen.swift */; };
+		21BA4B882EE4179100FFF2F8 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B732EE4179100FFF2F8 /* ChatView.swift */; };
+		21BA4B892EE4179100FFF2F8 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B772EE4179100FFF2F8 /* Components.swift */; };
+		21BA4B8A2EE4179100FFF2F8 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B782EE4179100FFF2F8 /* ContactView.swift */; };
+		21BA4B8B2EE4179100FFF2F8 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B7F2EE4179100FFF2F8 /* Models.swift */; };
+		21BA4B8C2EE4179100FFF2F8 /* VirtualTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B862EE4179100FFF2F8 /* VirtualTourView.swift */; };
+		21BA4B8D2EE4179100FFF2F8 /* GamificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B7B2EE4179100FFF2F8 /* GamificationView.swift */; };
+		21BA4B8E2EE4179100FFF2F8 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B822EE4179100FFF2F8 /* ProfileView.swift */; };
+		21BA4B8F2EE4179100FFF2F8 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B712EE4179100FFF2F8 /* AuthView.swift */; };
+		21BA4B902EE4179100FFF2F8 /* DiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B7A2EE4179100FFF2F8 /* DiaryView.swift */; };
+		21BA4B912EE4179100FFF2F8 /* CocoPetParadiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B752EE4179100FFF2F8 /* CocoPetParadiseApp.swift */; };
+		21BA4B922EE4179100FFF2F8 /* ServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B832EE4179100FFF2F8 /* ServicesView.swift */; };
+		21BA4B932EE4179100FFF2F8 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B762EE4179100FFF2F8 /* CommunityView.swift */; };
+		21BA4B942EE4179100FFF2F8 /* PetMatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B802EE4179100FFF2F8 /* PetMatchingView.swift */; };
+		21BA4B952EE4179100FFF2F8 /* PetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B812EE4179100FFF2F8 /* PetsView.swift */; };
+		21BA4B962EE4179100FFF2F8 /* BookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B722EE4179100FFF2F8 /* BookingView.swift */; };
+		21BA4B972EE4179100FFF2F8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B792EE4179100FFF2F8 /* ContentView.swift */; };
+		21BA4B982EE4179100FFF2F8 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B842EE4179100FFF2F8 /* SocialView.swift */; };
+		21BA4B992EE4179100FFF2F8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B7C2EE4179100FFF2F8 /* HomeView.swift */; };
+		21BA4B9A2EE4179100FFF2F8 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B702EE4179100FFF2F8 /* AppColors.swift */; };
+		21BA4B9B2EE4179100FFF2F8 /* Managers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B7E2EE4179100FFF2F8 /* Managers.swift */; };
+		21BA4B9C2EE4179100FFF2F8 /* Info 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21BA4B7D2EE4179100FFF2F8 /* Info 2.plist */; };
+		21BA4B9E2EE4219C00FFF2F8 /* ResponsiveHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BA4B9D2EE4219C00FFF2F8 /* ResponsiveHelpers.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		100 /* CocoPetParadise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoPetParadise.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		112 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21BA473A2EE2933D00FFF2F8 /* CocoPetParadise-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CocoPetParadise-Bridging-Header.h"; sourceTree = "<group>"; };
+		21BA48642EE3695A00FFF2F8 /* Bibi.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bibi.mp4; sourceTree = "<group>"; };
+		21BA48652EE3695A00FFF2F8 /* Caicai.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Caicai.mp4; sourceTree = "<group>"; };
+		21BA48662EE3695A00FFF2F8 /* Chacha.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chacha.mp4; sourceTree = "<group>"; };
+		21BA48672EE3695A00FFF2F8 /* chouchou.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = chouchou.mp4; sourceTree = "<group>"; };
+		21BA48682EE3695A00FFF2F8 /* Dudu.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dudu.mp4; sourceTree = "<group>"; };
+		21BA48692EE3695A00FFF2F8 /* Ergou.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ergou.mp4; sourceTree = "<group>"; };
+		21BA486A2EE3695A00FFF2F8 /* Fifi.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fifi.mp4; sourceTree = "<group>"; };
+		21BA486B2EE3695A00FFF2F8 /* Haha.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haha.mp4; sourceTree = "<group>"; };
+		21BA486C2EE3695A00FFF2F8 /* Jiujiu.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jiujiu.mp4; sourceTree = "<group>"; };
+		21BA486D2EE3695A00FFF2F8 /* Loki.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Loki.mp4; sourceTree = "<group>"; };
+		21BA486E2EE3695A00FFF2F8 /* Meimei.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Meimei.mp4; sourceTree = "<group>"; };
+		21BA486F2EE3695A00FFF2F8 /* Mia_cat.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Mia_cat.mp4; sourceTree = "<group>"; };
+		21BA48702EE3695A00FFF2F8 /* Mia_dog.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Mia_dog.mp4; sourceTree = "<group>"; };
+		21BA48712EE3695A00FFF2F8 /* Nana.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nana.mp4; sourceTree = "<group>"; };
+		21BA48722EE3695A00FFF2F8 /* Neon.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Neon.mp4; sourceTree = "<group>"; };
+		21BA48732EE3695A00FFF2F8 /* Nova.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nova.mp4; sourceTree = "<group>"; };
+		21BA48742EE3695A00FFF2F8 /* Oscar.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Oscar.mp4; sourceTree = "<group>"; };
+		21BA48752EE3695A00FFF2F8 /* Richard.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Richard.mp4; sourceTree = "<group>"; };
+		21BA48762EE3695A00FFF2F8 /* Tata.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tata.mp4; sourceTree = "<group>"; };
+		21BA48772EE3695A00FFF2F8 /* Toast.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Toast.mp4; sourceTree = "<group>"; };
+		21BA48782EE3695A00FFF2F8 /* Tutu.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tutu.mp4; sourceTree = "<group>"; };
+		21BA48792EE3695A00FFF2F8 /* XiaBao.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = XiaBao.mp4; sourceTree = "<group>"; };
+		21BA487A2EE3695A00FFF2F8 /* Xianbei.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Xianbei.mp4; sourceTree = "<group>"; };
+		21BA487B2EE3695A00FFF2F8 /* Yaya.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yaya.mp4; sourceTree = "<group>"; };
+		21BA4B702EE4179100FFF2F8 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		21BA4B712EE4179100FFF2F8 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		21BA4B722EE4179100FFF2F8 /* BookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingView.swift; sourceTree = "<group>"; };
+		21BA4B732EE4179100FFF2F8 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		21BA4B742EE4179100FFF2F8 /* CocoPetParadise-Bridging-Header 2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CocoPetParadise-Bridging-Header 2.h"; sourceTree = "<group>"; };
+		21BA4B752EE4179100FFF2F8 /* CocoPetParadiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocoPetParadiseApp.swift; sourceTree = "<group>"; };
+		21BA4B762EE4179100FFF2F8 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
+		21BA4B772EE4179100FFF2F8 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		21BA4B782EE4179100FFF2F8 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		21BA4B792EE4179100FFF2F8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		21BA4B7A2EE4179100FFF2F8 /* DiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryView.swift; sourceTree = "<group>"; };
+		21BA4B7B2EE4179100FFF2F8 /* GamificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationView.swift; sourceTree = "<group>"; };
+		21BA4B7C2EE4179100FFF2F8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		21BA4B7D2EE4179100FFF2F8 /* Info 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info 2.plist"; sourceTree = "<group>"; };
+		21BA4B7E2EE4179100FFF2F8 /* Managers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Managers.swift; sourceTree = "<group>"; };
+		21BA4B7F2EE4179100FFF2F8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		21BA4B802EE4179100FFF2F8 /* PetMatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetMatchingView.swift; sourceTree = "<group>"; };
+		21BA4B812EE4179100FFF2F8 /* PetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsView.swift; sourceTree = "<group>"; };
+		21BA4B822EE4179100FFF2F8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		21BA4B832EE4179100FFF2F8 /* ServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesView.swift; sourceTree = "<group>"; };
+		21BA4B842EE4179100FFF2F8 /* SocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
+		21BA4B852EE4179100FFF2F8 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		21BA4B862EE4179100FFF2F8 /* VirtualTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualTourView.swift; sourceTree = "<group>"; };
+		21BA4B9D2EE4219C00FFF2F8 /* ResponsiveHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveHelpers.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		200 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		300 = {
+			isa = PBXGroup;
+			children = (
+				301 /* CocoPetParadise */,
+				302 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		301 /* CocoPetParadise */ = {
+			isa = PBXGroup;
+			children = (
+				112 /* Assets.xcassets */,
+				21BA473A2EE2933D00FFF2F8 /* CocoPetParadise-Bridging-Header.h */,
+				21BA48642EE3695A00FFF2F8 /* Bibi.mp4 */,
+				21BA48652EE3695A00FFF2F8 /* Caicai.mp4 */,
+				21BA48662EE3695A00FFF2F8 /* Chacha.mp4 */,
+				21BA48672EE3695A00FFF2F8 /* chouchou.mp4 */,
+				21BA48682EE3695A00FFF2F8 /* Dudu.mp4 */,
+				21BA48692EE3695A00FFF2F8 /* Ergou.mp4 */,
+				21BA486A2EE3695A00FFF2F8 /* Fifi.mp4 */,
+				21BA486B2EE3695A00FFF2F8 /* Haha.mp4 */,
+				21BA486C2EE3695A00FFF2F8 /* Jiujiu.mp4 */,
+				21BA486D2EE3695A00FFF2F8 /* Loki.mp4 */,
+				21BA486E2EE3695A00FFF2F8 /* Meimei.mp4 */,
+				21BA486F2EE3695A00FFF2F8 /* Mia_cat.mp4 */,
+				21BA48702EE3695A00FFF2F8 /* Mia_dog.mp4 */,
+				21BA48712EE3695A00FFF2F8 /* Nana.mp4 */,
+				21BA48722EE3695A00FFF2F8 /* Neon.mp4 */,
+				21BA48732EE3695A00FFF2F8 /* Nova.mp4 */,
+				21BA48742EE3695A00FFF2F8 /* Oscar.mp4 */,
+				21BA48752EE3695A00FFF2F8 /* Richard.mp4 */,
+				21BA48762EE3695A00FFF2F8 /* Tata.mp4 */,
+				21BA48772EE3695A00FFF2F8 /* Toast.mp4 */,
+				21BA48782EE3695A00FFF2F8 /* Tutu.mp4 */,
+				21BA48792EE3695A00FFF2F8 /* XiaBao.mp4 */,
+				21BA487A2EE3695A00FFF2F8 /* Xianbei.mp4 */,
+				21BA487B2EE3695A00FFF2F8 /* Yaya.mp4 */,
+				21BA4B702EE4179100FFF2F8 /* AppColors.swift */,
+				21BA4B712EE4179100FFF2F8 /* AuthView.swift */,
+				21BA4B722EE4179100FFF2F8 /* BookingView.swift */,
+				21BA4B732EE4179100FFF2F8 /* ChatView.swift */,
+				21BA4B742EE4179100FFF2F8 /* CocoPetParadise-Bridging-Header 2.h */,
+				21BA4B752EE4179100FFF2F8 /* CocoPetParadiseApp.swift */,
+				21BA4B762EE4179100FFF2F8 /* CommunityView.swift */,
+				21BA4B772EE4179100FFF2F8 /* Components.swift */,
+				21BA4B782EE4179100FFF2F8 /* ContactView.swift */,
+				21BA4B792EE4179100FFF2F8 /* ContentView.swift */,
+				21BA4B7A2EE4179100FFF2F8 /* DiaryView.swift */,
+				21BA4B7B2EE4179100FFF2F8 /* GamificationView.swift */,
+				21BA4B9D2EE4219C00FFF2F8 /* ResponsiveHelpers.swift */,
+				21BA4B7C2EE4179100FFF2F8 /* HomeView.swift */,
+				21BA4B7D2EE4179100FFF2F8 /* Info 2.plist */,
+				21BA4B7E2EE4179100FFF2F8 /* Managers.swift */,
+				21BA4B7F2EE4179100FFF2F8 /* Models.swift */,
+				21BA4B802EE4179100FFF2F8 /* PetMatchingView.swift */,
+				21BA4B812EE4179100FFF2F8 /* PetsView.swift */,
+				21BA4B822EE4179100FFF2F8 /* ProfileView.swift */,
+				21BA4B832EE4179100FFF2F8 /* ServicesView.swift */,
+				21BA4B842EE4179100FFF2F8 /* SocialView.swift */,
+				21BA4B852EE4179100FFF2F8 /* SplashScreen.swift */,
+				21BA4B862EE4179100FFF2F8 /* VirtualTourView.swift */,
+			);
+			path = CocoPetParadise;
+			sourceTree = "<group>";
+		};
+		302 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				100 /* CocoPetParadise.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		400 /* CocoPetParadise */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 403 /* Build configuration list for PBXNativeTarget "CocoPetParadise" */;
+			buildPhases = (
+				401 /* Sources */,
+				200 /* Frameworks */,
+				402 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CocoPetParadise;
+			productName = CocoPetParadise;
+			productReference = 100 /* CocoPetParadise.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		500 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					400 = {
+						LastSwiftMigration = 1640;
+					};
+				};
+			};
+			buildConfigurationList = 501 /* Build configuration list for PBXProject "CocoPetParadise" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 300;
+			productRefGroup = 302 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				400 /* CocoPetParadise */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		402 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21BA487C2EE3695A00FFF2F8 /* Fifi.mp4 in Resources */,
+				21BA487D2EE3695A00FFF2F8 /* Tata.mp4 in Resources */,
+				21BA487E2EE3695A00FFF2F8 /* Tutu.mp4 in Resources */,
+				21BA487F2EE3695A00FFF2F8 /* Nana.mp4 in Resources */,
+				21BA48802EE3695A00FFF2F8 /* Dudu.mp4 in Resources */,
+				21BA48812EE3695A00FFF2F8 /* Ergou.mp4 in Resources */,
+				21BA48822EE3695A00FFF2F8 /* Oscar.mp4 in Resources */,
+				21BA48832EE3695A00FFF2F8 /* Chacha.mp4 in Resources */,
+				21BA48842EE3695A00FFF2F8 /* chouchou.mp4 in Resources */,
+				21BA48852EE3695A00FFF2F8 /* Toast.mp4 in Resources */,
+				21BA48862EE3695A00FFF2F8 /* Haha.mp4 in Resources */,
+				21BA48872EE3695A00FFF2F8 /* Jiujiu.mp4 in Resources */,
+				21BA48882EE3695A00FFF2F8 /* Mia_cat.mp4 in Resources */,
+				21BA48892EE3695A00FFF2F8 /* XiaBao.mp4 in Resources */,
+				21BA488A2EE3695A00FFF2F8 /* Bibi.mp4 in Resources */,
+				21BA488B2EE3695A00FFF2F8 /* Neon.mp4 in Resources */,
+				21BA488C2EE3695A00FFF2F8 /* Xianbei.mp4 in Resources */,
+				21BA488D2EE3695A00FFF2F8 /* Yaya.mp4 in Resources */,
+				21BA488E2EE3695A00FFF2F8 /* Nova.mp4 in Resources */,
+				21BA488F2EE3695A00FFF2F8 /* Richard.mp4 in Resources */,
+				21BA48902EE3695A00FFF2F8 /* Loki.mp4 in Resources */,
+				21BA48912EE3695A00FFF2F8 /* Mia_dog.mp4 in Resources */,
+				21BA4B9C2EE4179100FFF2F8 /* Info 2.plist in Resources */,
+				21BA48922EE3695A00FFF2F8 /* Caicai.mp4 in Resources */,
+				21BA48932EE3695A00FFF2F8 /* Meimei.mp4 in Resources */,
+				012 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21BA4B872EE4179100FFF2F8 /* SplashScreen.swift in Sources */,
+				21BA4B882EE4179100FFF2F8 /* ChatView.swift in Sources */,
+				21BA4B892EE4179100FFF2F8 /* Components.swift in Sources */,
+				21BA4B8A2EE4179100FFF2F8 /* ContactView.swift in Sources */,
+				21BA4B8B2EE4179100FFF2F8 /* Models.swift in Sources */,
+				21BA4B8C2EE4179100FFF2F8 /* VirtualTourView.swift in Sources */,
+				21BA4B8D2EE4179100FFF2F8 /* GamificationView.swift in Sources */,
+				21BA4B8E2EE4179100FFF2F8 /* ProfileView.swift in Sources */,
+				21BA4B8F2EE4179100FFF2F8 /* AuthView.swift in Sources */,
+				21BA4B902EE4179100FFF2F8 /* DiaryView.swift in Sources */,
+				21BA4B912EE4179100FFF2F8 /* CocoPetParadiseApp.swift in Sources */,
+				21BA4B922EE4179100FFF2F8 /* ServicesView.swift in Sources */,
+				21BA4B932EE4179100FFF2F8 /* CommunityView.swift in Sources */,
+				21BA4B942EE4179100FFF2F8 /* PetMatchingView.swift in Sources */,
+				21BA4B952EE4179100FFF2F8 /* PetsView.swift in Sources */,
+				21BA4B962EE4179100FFF2F8 /* BookingView.swift in Sources */,
+				21BA4B972EE4179100FFF2F8 /* ContentView.swift in Sources */,
+				21BA4B9E2EE4219C00FFF2F8 /* ResponsiveHelpers.swift in Sources */,
+				21BA4B982EE4179100FFF2F8 /* SocialView.swift in Sources */,
+				21BA4B992EE4179100FFF2F8 /* HomeView.swift in Sources */,
+				21BA4B9A2EE4179100FFF2F8 /* AppColors.swift in Sources */,
+				21BA4B9B2EE4179100FFF2F8 /* Managers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		600 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		601 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		602 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Coco's Pet Paradise";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cocopets.paradise;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "CocoPetParadise/CocoPetParadise-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		603 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Coco's Pet Paradise";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cocopets.paradise;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "CocoPetParadise/CocoPetParadise-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		403 /* Build configuration list for PBXNativeTarget "CocoPetParadise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				602 /* Debug */,
+				603 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		501 /* Build configuration list for PBXProject "CocoPetParadise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				600 /* Debug */,
+				601 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 500 /* Project object */;
+}
