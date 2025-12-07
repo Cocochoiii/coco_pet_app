@@ -80,31 +80,29 @@ struct RootView: View {
     var body: some View {
         ZStack {
             // Main content based on auth state
-            if appState.isAuthenticated {
-                ContentView()
-                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
-            } else {
-                AuthView()
-                    .transition(.opacity.combined(with: .move(edge: .trailing)))
+            // Only render after splash is done to prevent overlap
+            if !showSplash {
+                if appState.isAuthenticated {
+                    ContentView()
+                        .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                } else {
+                    AuthView()
+                        .transition(.opacity)
+                }
             }
             
             // Splash screen overlay
             if showSplash {
-                SplashScreen()
-                    .transition(.opacity)
-                    .zIndex(100)
+                SplashScreen(onComplete: {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        showSplash = false
+                    }
+                })
+                .transition(.opacity)
+                .zIndex(100)
             }
         }
-        .animation(.easeInOut(duration: 0.5), value: appState.isAuthenticated)
-        .animation(.easeInOut(duration: 0.5), value: showSplash)
-        .onAppear {
-            // Show splash for 2.5 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                withAnimation {
-                    showSplash = false
-                }
-            }
-        }
+        .animation(.easeInOut(duration: 0.4), value: appState.isAuthenticated)
     }
 }
 

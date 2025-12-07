@@ -1,8 +1,9 @@
 //
-//  HomeView.swift
+//  HomeView_Enhanced.swift
 //  CocoPetParadise
 //
-//  Simplified Home screen with beautiful animations and custom illustration logo
+//  Premium Home screen with sophisticated animations and mature UI/UX
+//  Inspired by Instagram, Airbnb, and Apple design systems
 //
 
 import SwiftUI
@@ -20,38 +21,47 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                AnimatedHomeBackground(isAnimating: $animateBackground)
-                FloatingDecorations(animate: $animateDecorations)
+                // Premium animated background
+                PremiumHomeBackground(isAnimating: $animateBackground, scrollOffset: 0)
                 
+                // Floating decorations
+                PremiumFloatingDecorations(animate: $animateDecorations)
+                
+                // Main content
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 0) {
-                        HomeHeroSection(animateContent: $animateContent)
+                        // Hero section
+                        PremiumHeroSection(animateContent: $animateContent)
                         
-                        QuickStatsCard()
+                        // Quick stats
+                        PremiumQuickStatsCard()
                             .padding(.horizontal, 20)
-                            .padding(.top, -40)
+                            .padding(.top, -30)
                             .opacity(animateContent ? 1 : 0)
-                            .offset(y: animateContent ? 0 : 30)
-                            .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.3), value: animateContent)
+                            .offset(y: animateContent ? 0 : 20)
+                            .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.2), value: animateContent)
                         
-                        QuickActionsSection(showBooking: $showBooking, showChat: $showChat)
-                            .padding(.top, 30)
+                        // Quick actions
+                        PremiumQuickActionsSection(showBooking: $showBooking, showChat: $showChat)
+                            .padding(.top, 24)
                             .opacity(animateContent ? 1 : 0)
-                            .offset(y: animateContent ? 0 : 30)
-                            .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.4), value: animateContent)
+                            .offset(y: animateContent ? 0 : 20)
+                            .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.3), value: animateContent)
                         
-                        FeaturedPetsCarousel()
-                            .padding(.top, 30)
+                        // Featured pets
+                        PremiumFeaturedPetsCarousel()
+                            .padding(.top, 24)
                             .opacity(animateContent ? 1 : 0)
-                            .offset(y: animateContent ? 0 : 30)
-                            .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.5), value: animateContent)
+                            .offset(y: animateContent ? 0 : 20)
+                            .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4), value: animateContent)
                         
-                        BookNowCTASection(showBooking: $showBooking)
+                        // Book now CTA
+                        PremiumBookNowCTASection(showBooking: $showBooking)
                             .padding(.horizontal, 20)
-                            .padding(.top, 30)
+                            .padding(.top, 24)
                             .opacity(animateContent ? 1 : 0)
-                            .offset(y: animateContent ? 0 : 30)
-                            .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.6), value: animateContent)
+                            .offset(y: animateContent ? 0 : 20)
+                            .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.5), value: animateContent)
                         
                         Spacer(minLength: 120)
                     }
@@ -63,7 +73,7 @@ struct HomeView: View {
         }
         .onAppear {
             animateBackground = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 animateContent = true
                 animateDecorations = true
             }
@@ -71,67 +81,67 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Home Hero Section (⭐ 使用inner-logo，tagline移到Welcome Back下面)
-struct HomeHeroSection: View {
+// MARK: - Scroll Offset Preference Key
+struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+// MARK: - Premium Hero Section
+struct PremiumHeroSection: View {
     @Binding var animateContent: Bool
     @State private var logoFloat: CGFloat = 0
     
     var body: some View {
         VStack(spacing: 0) {
-            Spacer().frame(height: 60)
+            Spacer().frame(height: 55)
             
-            // Welcome message with animated logo
             HStack(spacing: 16) {
-                // ⭐ 使用inner-logo
+                // Elegant logo container
                 ZStack {
                     Circle()
-                        .fill(AppColors.primary100)
-                        .frame(width: 80, height: 80)
-                        .shadow(color: AppColors.primary700.opacity(0.2), radius: 15, x: 0, y: 8)
-                    
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [.white, AppColors.primary50],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(Color.white)
                         .frame(width: 72, height: 72)
+                        .shadow(color: AppColors.primary700.opacity(0.12), radius: 15, x: 0, y: 6)
                     
-                    LogoImage(name: "inner-logo", size: 65)
+                    LogoImage(name: "inner-logo", size: 64)
                         .clipShape(Circle())
                         .offset(y: logoFloat)
                 }
                 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 5) {
+                    // Greeting
                     Text(greetingText)
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(AppColors.textSecondary)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(AppColors.textTertiary)
                     
                     Text("Welcome Back!")
                         .font(.system(size: 26, weight: .bold, design: .rounded))
                         .foregroundColor(AppColors.textPrimary)
                     
-                    // ⭐ Tagline移到这里，紧跟在Welcome Back下面
                     Text("Your pets' home away from home")
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.system(size: 13, weight: .regular))
                         .foregroundColor(AppColors.textTertiary)
-                        .padding(.top, 2)
+                        .padding(.top, 1)
                 }
                 
                 Spacer()
+                
+                // Notification bell
+                NotificationBellButton()
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             .opacity(animateContent ? 1 : 0)
-            .offset(x: animateContent ? 0 : -30)
-            .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1), value: animateContent)
+            .offset(x: animateContent ? 0 : -20)
+            .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: animateContent)
             
-            Spacer().frame(height: 60)
+            Spacer().frame(height: 55)
         }
-        .frame(height: 200)
+        .frame(height: 190)
         .onAppear {
-            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+            withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {
                 logoFloat = -5
             }
         }
@@ -140,18 +150,312 @@ struct HomeHeroSection: View {
     private var greetingText: String {
         let hour = Calendar.current.component(.hour, from: Date())
         switch hour {
-        case 5..<12: return "Good Morning"
+        case 5..<12: return "Good Morning ☀️"
         case 12..<17: return "Good Afternoon"
         case 17..<21: return "Good Evening"
-        default: return "Good Night"
+        default: return "Good Night 🌙"
         }
     }
 }
 
-// MARK: - Featured Pets Carousel
-struct FeaturedPetsCarousel: View {
+// MARK: - Notification Bell Button
+struct NotificationBellButton: View {
+    @State private var hasNotifications = true
+    @State private var bellRotation: Double = 0
+    
+    var body: some View {
+        Button(action: {
+            HapticManager.impact(.light)
+            // Shake animation
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.3)) {
+                bellRotation = 15
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.3)) {
+                    bellRotation = -15
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                    bellRotation = 0
+                }
+            }
+        }) {
+            ZStack {
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 44, height: 44)
+                    .shadow(color: AppColors.primary700.opacity(0.08), radius: 8, x: 0, y: 4)
+                
+                Image(systemName: "bell.fill")
+                    .font(.system(size: 18))
+                    .foregroundColor(AppColors.textPrimary)
+                    .rotationEffect(.degrees(bellRotation))
+                
+                // Notification dot
+                if hasNotifications {
+                    Circle()
+                        .fill(AppColors.error)
+                        .frame(width: 10, height: 10)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.white, lineWidth: 2)
+                        )
+                        .offset(x: 12, y: -12)
+                }
+            }
+            .frame(width: 44, height: 44)
+        }
+    }
+}
+
+// MARK: - Premium Quick Stats Card
+struct PremiumQuickStatsCard: View {
+    @State private var catCount: Int = 0
+    @State private var dogCount: Int = 0
+    @State private var ratingValue: Double = 0
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            PremiumStatItem(
+                icon: "cat.fill",
+                value: "\(catCount)",
+                label: "Cats",
+                color: AppColors.primary700
+            )
+            
+            PremiumStatDivider()
+            
+            PremiumStatItem(
+                icon: "dog.fill",
+                value: "\(dogCount)",
+                label: "Dogs",
+                color: AppColors.primary600
+            )
+            
+            PremiumStatDivider()
+            
+            PremiumStatItem(
+                icon: "star.fill",
+                value: String(format: "%.1f", ratingValue),
+                label: "Rating",
+                color: AppColors.warning
+            )
+        }
+        .padding(.vertical, 20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .shadow(color: AppColors.primary700.opacity(0.1), radius: 20, x: 0, y: 8)
+        )
+        .onAppear {
+            animateCounter(to: 13, duration: 0.6) { catCount = $0 }
+            animateCounter(to: 11, duration: 0.6) { dogCount = $0 }
+            animateRating(to: 5.0, duration: 0.8) { ratingValue = $0 }
+        }
+    }
+    
+    private func animateCounter(to target: Int, duration: Double, update: @escaping (Int) -> Void) {
+        let steps = 15
+        let stepDuration = duration / Double(steps)
+        for i in 0...steps {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * stepDuration) {
+                update(Int(Double(target) * Double(i) / Double(steps)))
+            }
+        }
+    }
+    
+    private func animateRating(to target: Double, duration: Double, update: @escaping (Double) -> Void) {
+        let steps = 20
+        let stepDuration = duration / Double(steps)
+        for i in 0...steps {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * stepDuration) {
+                update(target * Double(i) / Double(steps))
+            }
+        }
+    }
+}
+
+struct PremiumStatItem: View {
+    let icon: String
+    let value: String
+    let label: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 20))
+                .foregroundColor(color)
+            
+            Text(value)
+                .font(.system(size: 22, weight: .bold, design: .rounded))
+                .foregroundColor(AppColors.textPrimary)
+                .monospacedDigit()
+            
+            Text(label)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(AppColors.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct PremiumStatDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(AppColors.neutral200)
+            .frame(width: 1, height: 45)
+    }
+}
+
+// MARK: - Premium Quick Actions Section
+struct PremiumQuickActionsSection: View {
+    @Binding var showBooking: Bool
+    @Binding var showChat: Bool
+    @EnvironmentObject var chatManager: ChatManager
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Quick Actions")
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(AppColors.textPrimary)
+                .padding(.horizontal, 20)
+            
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                PremiumQuickActionCard(
+                    icon: "calendar.badge.plus",
+                    title: "Book Now",
+                    subtitle: "Reserve a spot",
+                    color: AppColors.primary700
+                ) {
+                    showBooking = true
+                }
+                
+                PremiumQuickActionCard(
+                    icon: "bubble.left.and.bubble.right.fill",
+                    title: "Chat with Us",
+                    subtitle: chatManager.unreadCount > 0 ? "\(chatManager.unreadCount) new" : "Get help",
+                    color: AppColors.info,
+                    badge: chatManager.unreadCount
+                ) {
+                    showChat = true
+                }
+                
+                NavigationLink(destination: PetsView()) {
+                    PremiumQuickActionCardContent(
+                        icon: "pawprint.fill",
+                        title: "Our Pets",
+                        subtitle: "Meet the family",
+                        color: AppColors.primary600
+                    )
+                }
+                
+                NavigationLink(destination: ServicesView()) {
+                    PremiumQuickActionCardContent(
+                        icon: "sparkles",
+                        title: "Services",
+                        subtitle: "View prices",
+                        color: AppColors.warning
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+}
+
+struct PremiumQuickActionCard: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let color: Color
+    var badge: Int = 0
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: {
+            HapticManager.impact(.light)
+            action()
+        }) {
+            PremiumQuickActionCardContent(
+                icon: icon,
+                title: title,
+                subtitle: subtitle,
+                color: color,
+                badge: badge
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct PremiumQuickActionCardContent: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let color: Color
+    var badge: Int = 0
+    
+    @State private var isPressed = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ZStack(alignment: .topTrailing) {
+                // Icon
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.12))
+                        .frame(width: 48, height: 48)
+                    
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundColor(color)
+                }
+                
+                // Badge
+                if badge > 0 {
+                    ZStack {
+                        Circle()
+                            .fill(AppColors.error)
+                            .frame(width: 20, height: 20)
+                        
+                        Text("\(min(badge, 9))\(badge > 9 ? "+" : "")")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                    .offset(x: 4, y: -4)
+                }
+            }
+            
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(AppColors.textPrimary)
+                
+                Text(subtitle)
+                    .font(.system(size: 12))
+                    .foregroundColor(badge > 0 ? color : AppColors.textSecondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: color.opacity(0.1), radius: 12, x: 0, y: 4)
+        )
+        .scaleEffect(isPressed ? 0.97 : 1)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+        .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+            isPressed = pressing
+        }, perform: {})
+    }
+}
+
+// MARK: - Premium Featured Pets Carousel
+struct PremiumFeaturedPetsCarousel: View {
     @EnvironmentObject var petDataManager: PetDataManager
-    @State private var selectedIndex = 0
     
     var featuredPets: [Pet] {
         Array(petDataManager.pets.prefix(6))
@@ -161,7 +465,7 @@ struct FeaturedPetsCarousel: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("Meet Our Furry Friends")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
                     .foregroundColor(AppColors.textPrimary)
                 
                 Spacer()
@@ -169,33 +473,34 @@ struct FeaturedPetsCarousel: View {
                 NavigationLink(destination: PetsView()) {
                     HStack(spacing: 4) {
                         Text("See All")
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.system(size: 13, weight: .semibold))
                         Image(systemName: "arrow.right")
-                            .font(.system(size: 12, weight: .semibold))
+                            .font(.system(size: 11, weight: .semibold))
                     }
                     .foregroundColor(AppColors.primary600)
                 }
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
+                HStack(spacing: 14) {
                     ForEach(Array(featuredPets.enumerated()), id: \.element.id) { index, pet in
                         NavigationLink(destination: PetsView()) {
-                            FeaturedPetCard(pet: pet, index: index)
+                            PremiumFeaturedPetCard(pet: pet, index: index)
                         }
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.vertical, 4)
             }
         }
     }
 }
 
-struct FeaturedPetCard: View {
+struct PremiumFeaturedPetCard: View {
     let pet: Pet
     let index: Int
-    @State private var isHovered = false
+    @State private var isPressed = false
     
     var cardGradient: LinearGradient {
         let colors: [[Color]] = [
@@ -212,29 +517,33 @@ struct FeaturedPetCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Image section
             ZStack(alignment: .topTrailing) {
-                if let uiImage = UIImage(named: pet.image) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 160, height: 160)
-                        .clipped()
-                } else {
+                ZStack {
                     Rectangle()
                         .fill(cardGradient)
-                        .frame(width: 160, height: 160)
-                        .overlay(
-                            Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
-                                .font(.system(size: 40))
-                                .foregroundColor(AppColors.primary400.opacity(0.5))
-                        )
+                        .frame(width: 155, height: 155)
+                    
+                    if let uiImage = UIImage(named: pet.image) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 155, height: 155)
+                            .clipped()
+                    } else {
+                        Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
+                            .font(.system(size: 40))
+                            .foregroundColor(AppColors.primary400.opacity(0.5))
+                    }
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 14))
                 
+                // Pet type badge
                 HStack(spacing: 4) {
                     Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
-                        .font(.system(size: 10))
+                        .font(.system(size: 9, weight: .semibold))
                     Text(pet.type == .cat ? "Cat" : "Dog")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.system(size: 9, weight: .semibold))
                 }
                 .foregroundColor(.white)
                 .padding(.horizontal, 8)
@@ -246,16 +555,18 @@ struct FeaturedPetCard: View {
                 .padding(8)
             }
             
+            // Info section
             VStack(alignment: .leading, spacing: 6) {
                 Text(pet.name)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundColor(AppColors.textPrimary)
                 
                 Text(pet.breed)
-                    .font(.system(size: 12))
+                    .font(.system(size: 11))
                     .foregroundColor(AppColors.textSecondary)
                     .lineLimit(1)
                 
+                // Personality tags
                 HStack(spacing: 4) {
                     ForEach(pet.personality.prefix(2), id: \.self) { trait in
                         Text(trait)
@@ -268,263 +579,269 @@ struct FeaturedPetCard: View {
                     }
                 }
             }
-            .padding(12)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 12)
         }
-        .frame(width: 160)
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(color: AppColors.primary700.opacity(0.1), radius: 12, x: 0, y: 6)
-        .scaleEffect(isHovered ? 1.02 : 1)
-        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isHovered)
+        .frame(width: 155)
+        .background(
+            RoundedRectangle(cornerRadius: 18)
+                .fill(Color.white)
+                .shadow(color: AppColors.primary700.opacity(0.08), radius: 12, x: 0, y: 4)
+        )
+        .scaleEffect(isPressed ? 1.02 : 1)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+        .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+            isPressed = pressing
+        }, perform: {})
     }
 }
 
-// MARK: - Book Now CTA Section
-struct BookNowCTASection: View {
+// MARK: - Premium Book Now CTA Section
+struct PremiumBookNowCTASection: View {
     @Binding var showBooking: Bool
     @State private var isAnimating = false
     @State private var pulseScale: CGFloat = 1.0
     @State private var floatingOffset: CGFloat = 0
+    @State private var isPressed = false
     
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
+            // Main CTA button
             Button(action: {
                 showBooking = true
                 HapticManager.impact(.medium)
             }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 28)
+                    // Base gradient
+                    RoundedRectangle(cornerRadius: 24)
                         .fill(
                             LinearGradient(
-                                colors: [AppColors.primary500, AppColors.primary600, AppColors.primary700],
+                                colors: [AppColors.primary600, AppColors.primary700, AppColors.primary800],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
                     
+                    // Subtle decorative elements
                     GeometryReader { geo in
                         Circle()
-                            .fill(Color.white.opacity(0.1))
-                            .frame(width: 150, height: 150)
-                            .offset(x: geo.size.width - 60, y: -50)
+                            .fill(Color.white.opacity(0.06))
+                            .frame(width: 120, height: 120)
+                            .offset(x: geo.size.width - 40, y: -40)
                         
                         Circle()
-                            .fill(Color.white.opacity(0.08))
-                            .frame(width: 100, height: 100)
-                            .offset(x: -30, y: geo.size.height - 40)
-                        
-                        ForEach(0..<3, id: \.self) { index in
-                            Image(systemName: "pawprint.fill")
-                                .font(.system(size: CGFloat(16 + index * 4)))
-                                .foregroundColor(.white.opacity(0.15))
-                                .offset(
-                                    x: CGFloat(40 + index * 80),
-                                    y: CGFloat(20 + index * 30) + (isAnimating ? -5 : 5)
-                                )
-                                .animation(
-                                    .easeInOut(duration: 2)
-                                    .repeatForever(autoreverses: true)
-                                    .delay(Double(index) * 0.3),
-                                    value: isAnimating
-                                )
-                        }
+                            .fill(Color.white.opacity(0.04))
+                            .frame(width: 80, height: 80)
+                            .offset(x: -25, y: geo.size.height - 25)
                     }
                     
-                    HStack(spacing: 16) {
+                    // Content
+                    HStack(spacing: 18) {
+                        // Icon with subtle pulse
                         ZStack {
                             Circle()
-                                .stroke(Color.white.opacity(0.3), lineWidth: 2)
-                                .frame(width: 70, height: 70)
+                                .stroke(Color.white.opacity(0.2), lineWidth: 1.5)
+                                .frame(width: 58, height: 58)
                                 .scaleEffect(pulseScale)
                                 .opacity(2 - pulseScale)
                             
                             Circle()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.3), Color.white.opacity(0.1)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .frame(width: 64, height: 64)
+                                .fill(Color.white.opacity(0.15))
+                                .frame(width: 54, height: 54)
                             
                             Image(systemName: "calendar.badge.plus")
-                                .font(.system(size: 28, weight: .medium))
+                                .font(.system(size: 24, weight: .medium))
                                 .foregroundColor(.white)
                                 .offset(y: floatingOffset)
                         }
                         
-                        VStack(alignment: .leading, spacing: 6) {
+                        VStack(alignment: .leading, spacing: 4) {
                             Text("Ready to Book?")
-                                .font(.system(size: 22, weight: .bold, design: .rounded))
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
                             
-                            Text("Reserve your pet's paradise stay today!")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.white.opacity(0.9))
-                                .lineLimit(2)
+                            Text("Reserve your pet's paradise stay")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(.white.opacity(0.85))
                         }
                         
                         Spacer()
                         
-                        ZStack {
-                            Circle()
-                                .fill(Color.white.opacity(0.2))
-                                .frame(width: 48, height: 48)
-                            
-                            Image(systemName: "arrow.right")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundColor(.white)
-                                .offset(x: isAnimating ? 3 : 0)
-                        }
+                        // Arrow
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white.opacity(0.9))
+                            .padding(14)
+                            .background(Color.white.opacity(0.15))
+                            .clipShape(Circle())
                     }
                     .padding(.horizontal, 20)
-                    .padding(.vertical, 24)
+                    .padding(.vertical, 20)
                 }
-                .frame(height: 120)
-                .shadow(color: AppColors.primary600.opacity(0.5), radius: 25, x: 0, y: 15)
+                .frame(height: 100)
+                .shadow(color: AppColors.primary700.opacity(0.35), radius: 20, x: 0, y: 10)
+                .scaleEffect(isPressed ? 0.98 : 1)
             }
             .buttonStyle(PlainButtonStyle())
-            .onAppear {
-                isAnimating = true
-                withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: false)) {
-                    pulseScale = 1.5
+            .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    isPressed = pressing
                 }
-                withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+            }, perform: {})
+            .onAppear {
+                withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: false)) {
+                    pulseScale = 1.4
+                }
+                withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {
                     floatingOffset = -4
                 }
             }
             
-            VStack(spacing: 12) {
-                HStack(spacing: 16) {
-                    HStack(spacing: 10) {
-                        ZStack {
-                            Circle()
-                                .fill(AppColors.primary100)
-                                .frame(width: 40, height: 40)
-                            Image(systemName: "cat.fill")
-                                .font(.system(size: 18))
-                                .foregroundColor(AppColors.primary600)
-                        }
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Cat Boarding")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(AppColors.textSecondary)
-                            Text("$25/night")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(AppColors.textPrimary)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    Rectangle()
-                        .fill(AppColors.neutral200)
-                        .frame(width: 1, height: 40)
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 10) {
-                        ZStack {
-                            Circle()
-                                .fill(Color(hex: "FFE5E5"))
-                                .frame(width: 40, height: 40)
-                            Image(systemName: "dog.fill")
-                                .font(.system(size: 18))
-                                .foregroundColor(Color(hex: "FF6B6B"))
-                        }
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Dog Boarding")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(AppColors.textSecondary)
-                            Text("$40-60/night")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(AppColors.textPrimary)
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-                
-                Text("Price varies by size • Includes meals, playtime & daily updates")
-                    .font(.system(size: 11))
-                    .foregroundColor(AppColors.textTertiary)
-            }
-            .padding(.vertical, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.white)
-                    .shadow(color: Color.black.opacity(0.06), radius: 15, x: 0, y: 5)
-            )
+            // Pricing info card
+            PremiumPricingInfoCard()
         }
     }
 }
 
-// MARK: - Animated Home Background
-struct AnimatedHomeBackground: View {
+struct PremiumPricingInfoCard: View {
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 0) {
+                // Cat pricing
+                PricingItem(
+                    icon: "cat.fill",
+                    iconColor: AppColors.primary600,
+                    iconBgColor: AppColors.primary100,
+                    label: "Cat Boarding",
+                    price: "$25/night"
+                )
+                
+                Spacer()
+                
+                Rectangle()
+                    .fill(AppColors.neutral200)
+                    .frame(width: 1, height: 40)
+                
+                Spacer()
+                
+                // Dog pricing
+                PricingItem(
+                    icon: "dog.fill",
+                    iconColor: Color(hex: "FF6B6B"),
+                    iconBgColor: Color(hex: "FFE5E5"),
+                    label: "Dog Boarding",
+                    price: "$40-60/night"
+                )
+            }
+            .padding(.horizontal, 16)
+            
+            // Footer note
+            Text("Price varies by size • Meals, playtime & daily updates included")
+                .font(.system(size: 11))
+                .foregroundColor(AppColors.textTertiary)
+        }
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.04), radius: 10, x: 0, y: 4)
+        )
+    }
+}
+
+struct PricingItem: View {
+    let icon: String
+    let iconColor: Color
+    let iconBgColor: Color
+    let label: String
+    let price: String
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(iconBgColor)
+                    .frame(width: 38, height: 38)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 16))
+                    .foregroundColor(iconColor)
+            }
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(AppColors.textSecondary)
+                
+                Text(price)
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundColor(AppColors.textPrimary)
+            }
+        }
+    }
+}
+
+// MARK: - Premium Home Background
+struct PremiumHomeBackground: View {
     @Binding var isAnimating: Bool
+    var scrollOffset: CGFloat = 0  // Keep for compatibility but unused
     
     var body: some View {
         ZStack {
+            // Base gradient - soft and elegant
             LinearGradient(
                 colors: [
-                    AppColors.primary200.opacity(0.6),
-                    AppColors.primary100.opacity(0.4),
+                    AppColors.primary100.opacity(0.6),
+                    AppColors.primary50.opacity(0.3),
                     AppColors.background
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             
+            // Subtle animated orbs
             GeometryReader { geo in
                 Circle()
                     .fill(
                         RadialGradient(
-                            colors: [AppColors.primary300.opacity(0.4), AppColors.primary200.opacity(0.1)],
+                            colors: [
+                                AppColors.primary200.opacity(0.4),
+                                AppColors.primary100.opacity(0)
+                            ],
                             center: .center,
                             startRadius: 10,
                             endRadius: 150
                         )
                     )
                     .frame(width: 300, height: 300)
-                    .blur(radius: 40)
-                    .offset(x: -80, y: isAnimating ? -50 : -80)
+                    .blur(radius: 50)
+                    .offset(x: -80, y: -40 + (isAnimating ? 20 : 0))
                     .animation(.easeInOut(duration: 5).repeatForever(autoreverses: true), value: isAnimating)
                 
                 Circle()
                     .fill(
                         RadialGradient(
-                            colors: [AppColors.primary400.opacity(0.3), AppColors.primary300.opacity(0.1)],
+                            colors: [
+                                AppColors.primary300.opacity(0.25),
+                                Color.clear
+                            ],
                             center: .center,
                             startRadius: 10,
                             endRadius: 120
                         )
                     )
-                    .frame(width: 250, height: 250)
-                    .blur(radius: 35)
-                    .offset(x: geo.size.width - 100, y: isAnimating ? 200 : 180)
+                    .frame(width: 240, height: 240)
+                    .blur(radius: 40)
+                    .offset(x: geo.size.width - 100, y: 200 + (isAnimating ? -15 : 15))
                     .animation(.easeInOut(duration: 4).repeatForever(autoreverses: true), value: isAnimating)
-                
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [AppColors.primary200.opacity(0.3), Color.clear],
-                            center: .center,
-                            startRadius: 20,
-                            endRadius: 180
-                        )
-                    )
-                    .frame(width: 350, height: 350)
-                    .blur(radius: 50)
-                    .offset(x: geo.size.width / 2 - 175, y: geo.size.height - 200 + (isAnimating ? -30 : 0))
-                    .animation(.easeInOut(duration: 6).repeatForever(autoreverses: true), value: isAnimating)
             }
         }
         .ignoresSafeArea()
     }
 }
 
-// MARK: - Floating Decorations
-struct FloatingDecorations: View {
+// MARK: - Premium Floating Decorations
+struct PremiumFloatingDecorations: View {
     @Binding var animate: Bool
     @State private var floatOffset1: CGFloat = 0
     @State private var floatOffset2: CGFloat = 0
@@ -532,206 +849,25 @@ struct FloatingDecorations: View {
     var body: some View {
         GeometryReader { geo in
             DecorationImage(name: "left-decoration", fallbackIcon: "leaf.fill")
-                .frame(width: 220, height: 220)
-                .opacity(0.75)
+                .frame(width: 180, height: 180)
+                .opacity(0.55)
                 .rotationEffect(.degrees(-25))
-                .offset(x: -30, y: -20 + floatOffset1)
+                .offset(x: -40, y: -30 + floatOffset1)
             
             DecorationImage(name: "testimonials-decoration", fallbackIcon: "leaf.fill")
-                .frame(width: 200, height: 200)
-                .opacity(0.7)
-                .offset(x: geo.size.width - 140, y: 10 + floatOffset2)
+                .frame(width: 160, height: 160)
+                .opacity(0.5)
+                .offset(x: geo.size.width - 120, y: 20 + floatOffset2)
         }
+        .allowsHitTesting(false)
         .onAppear {
-            withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {
-                floatOffset1 = 15
+            withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+                floatOffset1 = 12
             }
-            withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true).delay(0.5)) {
-                floatOffset2 = 12
-            }
-        }
-    }
-}
-
-// MARK: - Quick Stats Card
-struct QuickStatsCard: View {
-    @State private var animateStats = false
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            StatItem(icon: "cat.fill", value: "13", label: "Cats", color: AppColors.primary700)
-            
-            Divider()
-                .frame(height: 40)
-                .background(AppColors.neutral200)
-            
-            StatItem(icon: "dog.fill", value: "11", label: "Dogs", color: AppColors.primary600)
-            
-            Divider()
-                .frame(height: 40)
-                .background(AppColors.neutral200)
-            
-            StatItem(icon: "star.fill", value: "5.0", label: "Rating", color: AppColors.warning)
-        }
-        .padding(.vertical, 20)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color.white)
-                .shadow(color: AppColors.primary700.opacity(0.1), radius: 20, x: 0, y: 10)
-        )
-    }
-}
-
-struct StatItem: View {
-    let icon: String
-    let value: String
-    let label: String
-    let color: Color
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.system(size: 22))
-                .foregroundColor(color)
-            
-            Text(value)
-                .font(.system(size: 22, weight: .bold, design: .rounded))
-                .foregroundColor(AppColors.textPrimary)
-            
-            Text(label)
-                .font(.system(size: 13))
-                .foregroundColor(AppColors.textSecondary)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-
-// MARK: - Quick Actions Section
-struct QuickActionsSection: View {
-    @Binding var showBooking: Bool
-    @Binding var showChat: Bool
-    @EnvironmentObject var chatManager: ChatManager
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Quick Actions")
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(AppColors.textPrimary)
-                .padding(.horizontal, 24)
-            
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                QuickActionCard(
-                    icon: "calendar.badge.plus",
-                    title: "Book Now",
-                    subtitle: "Reserve a spot",
-                    color: AppColors.primary700
-                ) {
-                    showBooking = true
-                }
-                
-                QuickActionCard(
-                    icon: "bubble.left.and.bubble.right.fill",
-                    title: "Chat with Us",
-                    subtitle: chatManager.unreadCount > 0 ? "\(chatManager.unreadCount) new" : "Get help",
-                    color: AppColors.info,
-                    badge: chatManager.unreadCount
-                ) {
-                    showChat = true
-                }
-                
-                NavigationLink(destination: PetsView()) {
-                    QuickActionCardContent(
-                        icon: "pawprint.fill",
-                        title: "Our Pets",
-                        subtitle: "Meet the family",
-                        color: AppColors.primary600
-                    )
-                }
-                
-                NavigationLink(destination: ServicesView()) {
-                    QuickActionCardContent(
-                        icon: "sparkles",
-                        title: "Services",
-                        subtitle: "Click to see prices",
-                        color: AppColors.primary500
-                    )
-                }
-            }
-            .padding(.horizontal, 20)
-        }
-    }
-}
-
-struct QuickActionCard: View {
-    let icon: String
-    let title: String
-    let subtitle: String
-    let color: Color
-    var badge: Int = 0
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            QuickActionCardContent(icon: icon, title: title, subtitle: subtitle, color: color, badge: badge)
-        }
-    }
-}
-
-struct QuickActionCardContent: View {
-    let icon: String
-    let title: String
-    let subtitle: String
-    let color: Color
-    var badge: Int = 0
-    
-    @State private var isPressed = false
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            ZStack(alignment: .topTrailing) {
-                ZStack {
-                    Circle()
-                        .fill(color.opacity(0.15))
-                        .frame(width: 50, height: 50)
-                    
-                    Image(systemName: icon)
-                        .font(.system(size: 22))
-                        .foregroundColor(color)
-                }
-                
-                if badge > 0 {
-                    ZStack {
-                        Circle()
-                            .fill(AppColors.error)
-                            .frame(width: 20, height: 20)
-                        
-                        Text("\(min(badge, 9))\(badge > 9 ? "+" : "")")
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                    .offset(x: 5, y: -5)
-                }
-            }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(AppColors.textPrimary)
-                
-                Text(subtitle)
-                    .font(.system(size: 13))
-                    .foregroundColor(badge > 0 ? color : AppColors.textSecondary)
+            withAnimation(.easeInOut(duration: 3.5).repeatForever(autoreverses: true).delay(0.5)) {
+                floatOffset2 = 10
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .shadow(color: color.opacity(0.15), radius: 15, x: 0, y: 8)
-        )
-        .scaleEffect(isPressed ? 0.95 : 1)
-        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
     }
 }
 

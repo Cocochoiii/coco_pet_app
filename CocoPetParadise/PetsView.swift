@@ -3,7 +3,7 @@
 //  CocoPetParadise
 //
 //  Pet gallery with filtering, detailed views, photo gallery, video playback,
-//  and user pet creation functionality
+//  and user pet creation functionality - Enhanced UI/UX
 //
 
 import SwiftUI
@@ -18,6 +18,7 @@ struct PetsView: View {
     @State private var showFavoritesOnly = false
     @State private var animateDecorations = false
     @State private var showAddPet = false
+    @State private var animateContent = false
     
     enum PetFilter: String, CaseIterable {
         case all = "All"
@@ -63,7 +64,11 @@ struct PetsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Decorations
+                // Background
+                AppColors.backgroundSecondary
+                    .ignoresSafeArea()
+                
+                // Decorations - PRESERVED EXACTLY AS ORIGINAL
                 VStack {
                     HStack(alignment: .top) {
                         DecorationImage(name: "current-pets-left", fallbackIcon: "cat.fill")
@@ -90,21 +95,29 @@ struct PetsView: View {
                     
                     // Search bar
                     PetSearchBar(text: $searchText, placeholder: "Search pets...")
-                        .padding(.horizontal)
-                        .padding(.bottom)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 14)
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 10)
                     
                     // Filter chips
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
+                        HStack(spacing: 10) {
                             PetFilterChip(
                                 title: "Favorites",
                                 icon: "heart.fill",
                                 isSelected: showFavoritesOnly
                             ) {
-                                showFavoritesOnly.toggle()
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    showFavoritesOnly.toggle()
+                                }
+                                HapticManager.impact(.light)
                             }
                             
-                            Divider().frame(height: 24)
+                            Rectangle()
+                                .fill(AppColors.neutral200)
+                                .frame(width: 1, height: 24)
+                                .padding(.horizontal, 4)
                             
                             ForEach(PetFilter.allCases, id: \.self) { filter in
                                 PetFilterChip(
@@ -113,64 +126,102 @@ struct PetsView: View {
                                     isSelected: selectedFilter == filter && !showFavoritesOnly,
                                     badge: filter == .myPets ? petDataManager.userPets.count : nil
                                 ) {
-                                    selectedFilter = filter
-                                    showFavoritesOnly = false
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                        selectedFilter = filter
+                                        showFavoritesOnly = false
+                                    }
+                                    HapticManager.impact(.light)
                                 }
                             }
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.bottom)
+                    .padding(.bottom, 14)
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 10)
                     
                     // Pet count & Add button
-                    HStack {
-                        Text("\(filteredPets.count) \(filteredPets.count == 1 ? "pet" : "pets")")
-                            .font(AppFonts.bodySmall)
-                            .foregroundColor(AppColors.textSecondary)
+                    HStack(alignment: .center) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "pawprint.fill")
+                                .font(.system(size: 11))
+                                .foregroundColor(AppColors.primary500)
+                            Text("\(filteredPets.count) \(filteredPets.count == 1 ? "pet" : "pets")")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(AppColors.textSecondary)
+                        }
                         
                         Spacer()
                         
-                        Button(action: { showAddPet = true }) {
+                        Button(action: {
+                            showAddPet = true
+                            HapticManager.impact(.medium)
+                        }) {
                             HStack(spacing: 6) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.system(size: 14))
-                                Text("Add My Pet")
+                                Image(systemName: "plus")
+                                    .font(.system(size: 12, weight: .semibold))
+                                Text("Add Pet")
                                     .font(.system(size: 13, weight: .semibold))
                             }
                             .foregroundColor(.white)
                             .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
-                            .background(AppColors.primary700)
+                            .padding(.vertical, 9)
+                            .background(
+                                LinearGradient(
+                                    colors: [AppColors.primary600, AppColors.primary700],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
                             .cornerRadius(20)
+                            .shadow(color: AppColors.primary700.opacity(0.25), radius: 6, x: 0, y: 3)
                         }
+                        .buttonStyle(PetScaleButtonStyle())
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom, 8)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 12)
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 10)
                     
                     // Pet grid
                     if filteredPets.isEmpty {
                         if selectedFilter == .myPets {
                             EmptyMyPetsView(showAddPet: $showAddPet)
+                                .transition(.opacity.combined(with: .scale(scale: 0.95)))
                         } else {
                             EmptyPetsView()
+                                .transition(.opacity.combined(with: .scale(scale: 0.95)))
                         }
                     } else {
                         ScrollView(showsIndicators: false) {
-                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                                ForEach(filteredPets) { pet in
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.flexible(), spacing: 14),
+                                    GridItem(.flexible(), spacing: 14)
+                                ],
+                                spacing: 16
+                            ) {
+                                ForEach(Array(filteredPets.enumerated()), id: \.element.id) { index, pet in
                                     NavigationLink(destination: PetDetailView(pet: pet)) {
                                         PetGridCard(pet: pet)
+                                            .opacity(animateContent ? 1 : 0)
+                                            .offset(y: animateContent ? 0 : 20)
+                                            .animation(
+                                                .spring(response: 0.4, dampingFraction: 0.75)
+                                                .delay(Double(index) * 0.04),
+                                                value: animateContent
+                                            )
                                     }
-                                    .buttonStyle(PlainButtonStyle())
+                                    .buttonStyle(PetCardButtonStyle())
                                 }
                             }
-                            .padding(.horizontal)
-                            .padding(.bottom, 100)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 120)
+                            .padding(.top, 4)
                         }
                     }
                 }
             }
-            .background(AppColors.backgroundSecondary)
             .navigationTitle("Our Pets")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showAddPet) {
@@ -179,6 +230,9 @@ struct PetsView: View {
             .onAppear {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.2)) {
                     animateDecorations = true
+                }
+                withAnimation(.easeOut(duration: 0.4).delay(0.1)) {
+                    animateContent = true
                 }
             }
         }
@@ -196,35 +250,66 @@ struct PetsView: View {
     }
 }
 
-// MARK: - Pet Search Bar (renamed to avoid conflicts)
-struct PetSearchBar: View {
-    @Binding var text: String
-    let placeholder: String
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(AppColors.textTertiary)
-            
-            TextField(placeholder, text: $text)
-                .font(AppFonts.bodyMedium)
-            
-            if !text.isEmpty {
-                Button(action: { text = "" }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(AppColors.textTertiary)
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: AppShadows.soft, radius: 4, x: 0, y: 2)
+// MARK: - Button Styles
+struct PetScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.96 : 1)
+            .animation(.spring(response: 0.2, dampingFraction: 0.7), value: configuration.isPressed)
     }
 }
 
-// MARK: - Pet Filter Chip (renamed to avoid conflicts)
+struct PetCardButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+    }
+}
+
+// MARK: - Pet Search Bar
+struct PetSearchBar: View {
+    @Binding var text: String
+    let placeholder: String
+    @FocusState private var isFocused: Bool
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(isFocused ? AppColors.primary600 : AppColors.textTertiary)
+            
+            TextField(placeholder, text: $text)
+                .font(.system(size: 15))
+                .foregroundColor(AppColors.textPrimary)
+                .focused($isFocused)
+            
+            if !text.isEmpty {
+                Button(action: {
+                    text = ""
+                    HapticManager.impact(.light)
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(AppColors.neutral400)
+                }
+                .transition(.scale.combined(with: .opacity))
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(Color.white)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isFocused ? AppColors.primary400 : Color.clear, lineWidth: 1.5)
+        )
+        .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 2)
+        .animation(.easeInOut(duration: 0.2), value: isFocused)
+    }
+}
+
+// MARK: - Pet Filter Chip
 struct PetFilterChip: View {
     let title: String
     let icon: String
@@ -234,32 +319,53 @@ struct PetFilterChip: View {
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 6) {
+            HStack(spacing: 5) {
                 Image(systemName: icon)
-                    .font(.system(size: 12))
+                    .font(.system(size: 11, weight: .medium))
                 Text(title)
-                    .font(AppFonts.bodySmall)
+                    .font(.system(size: 12, weight: .semibold))
                 
                 if let badge = badge, badge > 0 {
                     Text("\(badge)")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundColor(isSelected ? AppColors.primary700 : .white)
-                        .padding(.horizontal, 6)
+                        .padding(.horizontal, 5)
                         .padding(.vertical, 2)
-                        .background(isSelected ? Color.white : AppColors.primary600)
-                        .cornerRadius(8)
+                        .background(
+                            Capsule()
+                                .fill(isSelected ? Color.white : AppColors.primary500)
+                        )
                 }
             }
             .foregroundColor(isSelected ? .white : AppColors.textSecondary)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(isSelected ? AppColors.primary700 : Color.white)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 9)
+            .background(
+                Group {
+                    if isSelected {
+                        LinearGradient(
+                            colors: [AppColors.primary600, AppColors.primary700],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    } else {
+                        Color.white
+                    }
+                }
+            )
             .cornerRadius(20)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(isSelected ? Color.clear : AppColors.border, lineWidth: 1)
+                    .stroke(isSelected ? Color.clear : AppColors.neutral200, lineWidth: 1)
+            )
+            .shadow(
+                color: isSelected ? AppColors.primary700.opacity(0.2) : Color.black.opacity(0.03),
+                radius: isSelected ? 6 : 4,
+                x: 0,
+                y: isSelected ? 3 : 2
             )
         }
+        .buttonStyle(PetScaleButtonStyle())
     }
 }
 
@@ -275,57 +381,72 @@ struct PetGridCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Image container
             ZStack {
-                // Image
-                if isUserPet, let image = petDataManager.loadUserPetImage(named: pet.image) {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
-                        .clipped()
-                        .cornerRadius(16)
-                } else if UIImage(named: pet.image) != nil {
-                    Image(pet.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
-                        .clipped()
-                        .cornerRadius(16)
-                } else {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(LinearGradient(colors: [AppColors.primary200, AppColors.primary100], startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .aspectRatio(1, contentMode: .fit)
-                    
-                    Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
-                        .font(.system(size: 50))
-                        .foregroundColor(AppColors.primary400)
+                // Pet Image
+                Group {
+                    if isUserPet, let image = petDataManager.loadUserPetImage(named: pet.image) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else if UIImage(named: pet.image) != nil {
+                        Image(pet.image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else {
+                        LinearGradient(
+                            colors: [AppColors.primary100, AppColors.primary200],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .overlay(
+                            Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(AppColors.primary400)
+                        )
+                    }
                 }
+                .frame(maxWidth: .infinity)
+                .aspectRatio(1, contentMode: .fit)
+                .clipped()
                 
                 // Heart animation
                 if showHeartAnimation {
                     Image(systemName: "heart.fill")
-                        .font(.system(size: 60))
+                        .font(.system(size: 50))
                         .foregroundColor(.red)
+                        .shadow(color: .red.opacity(0.4), radius: 10)
                         .transition(.scale.combined(with: .opacity))
+                }
+                
+                // Gradient overlay for better text visibility
+                VStack {
+                    Spacer()
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.4)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 60)
                 }
                 
                 // Overlay controls
                 VStack {
-                    HStack {
+                    HStack(alignment: .top) {
                         if isUserPet {
-                            HStack(spacing: 4) {
+                            HStack(spacing: 3) {
                                 Image(systemName: "person.fill")
-                                    .font(.system(size: 10))
+                                    .font(.system(size: 8, weight: .semibold))
                                 Text("My Pet")
-                                    .font(.system(size: 10, weight: .medium))
+                                    .font(.system(size: 9, weight: .semibold))
                             }
                             .foregroundColor(.white)
-                            .padding(.horizontal, 8)
+                            .padding(.horizontal, 7)
                             .padding(.vertical, 4)
-                            .background(AppColors.info.opacity(0.9))
-                            .cornerRadius(12)
+                            .background(
+                                Capsule()
+                                    .fill(AppColors.info)
+                            )
                         }
                         
                         Spacer()
@@ -344,116 +465,160 @@ struct PetGridCard: View {
                             }
                         }) {
                             Image(systemName: pet.isFavorite ? "heart.fill" : "heart")
-                                .font(.system(size: 16))
+                                .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(pet.isFavorite ? .red : .white)
-                                .padding(8)
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
+                                .frame(width: 30, height: 30)
+                                .background(
+                                    Circle()
+                                        .fill(Color.black.opacity(0.25))
+                                        .blur(radius: 0.5)
+                                )
                         }
+                        .buttonStyle(PetScaleButtonStyle())
                     }
                     
                     Spacer()
                     
                     HStack {
+                        // Status badge
                         HStack(spacing: 4) {
                             Circle()
                                 .fill(pet.status.color)
-                                .frame(width: 6, height: 6)
+                                .frame(width: 5, height: 5)
                             Text(pet.status.displayName)
-                                .font(AppFonts.captionSmall)
+                                .font(.system(size: 9, weight: .medium))
                                 .foregroundColor(.white)
                         }
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, 7)
                         .padding(.vertical, 4)
-                        .background(Color.black.opacity(0.4))
-                        .cornerRadius(12)
+                        .background(
+                            Capsule()
+                                .fill(Color.black.opacity(0.35))
+                        )
                         
                         Spacer()
                         
-                        if pet.video != nil {
-                            HStack(spacing: 4) {
-                                Image(systemName: "play.fill")
-                                    .font(.system(size: 8))
-                                Image(systemName: "video.fill")
-                                    .font(.system(size: 10))
+                        HStack(spacing: 6) {
+                            if pet.video != nil {
+                                HStack(spacing: 3) {
+                                    Image(systemName: "play.fill")
+                                        .font(.system(size: 7))
+                                    Image(systemName: "video.fill")
+                                        .font(.system(size: 9))
+                                }
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 4)
+                                .background(
+                                    Capsule()
+                                        .fill(AppColors.primary600)
+                                )
+                            }
+                            
+                            HStack(spacing: 3) {
+                                Image(systemName: "photo.stack")
+                                    .font(.system(size: 9))
+                                Text("\(pet.images.count)")
+                                    .font(.system(size: 9, weight: .semibold))
                             }
                             .foregroundColor(.white)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 6)
-                            .background(AppColors.primary700.opacity(0.9))
-                            .clipShape(Capsule())
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(Color.black.opacity(0.35))
+                            )
                         }
-                        
-                        HStack(spacing: 2) {
-                            Image(systemName: "photo.stack")
-                                .font(.system(size: 10))
-                            Text("\(pet.images.count)")
-                                .font(AppFonts.captionSmall)
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.black.opacity(0.4))
-                        .cornerRadius(12)
                     }
                 }
-                .padding(8)
+                .padding(10)
             }
+            .frame(maxWidth: .infinity)
+            .aspectRatio(1, contentMode: .fit)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
             
             // Pet info
             VStack(alignment: .leading, spacing: 6) {
                 Text(pet.name)
-                    .font(AppFonts.headline)
+                    .font(.system(size: 15, weight: .bold))
                     .foregroundColor(AppColors.textPrimary)
+                    .lineLimit(1)
                 
                 Text(pet.breed)
-                    .font(AppFonts.caption)
+                    .font(.system(size: 12))
                     .foregroundColor(AppColors.textSecondary)
                     .lineLimit(1)
                 
-                HStack(spacing: 4) {
-                    ForEach(pet.personality.prefix(2), id: \.self) { trait in
-                        Text(trait)
-                            .font(.system(size: 9))
-                            .foregroundColor(AppColors.primary700)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(AppColors.primary100)
-                            .cornerRadius(4)
+                if !pet.personality.isEmpty {
+                    HStack(spacing: 4) {
+                        ForEach(pet.personality.prefix(2), id: \.self) { trait in
+                            Text(trait)
+                                .font(.system(size: 9, weight: .medium))
+                                .foregroundColor(AppColors.primary700)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 3)
+                                .background(
+                                    Capsule()
+                                        .fill(AppColors.primary50)
+                                )
+                        }
                     }
                 }
             }
-            .padding(12)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
         }
         .background(Color.white)
-        .cornerRadius(20)
-        .shadow(color: AppShadows.soft, radius: 8, x: 0, y: 2)
+        .cornerRadius(16)
+        .shadow(color: Color.black.opacity(0.06), radius: 10, x: 0, y: 4)
     }
 }
 
 // MARK: - Empty Views
 struct EmptyPetsView: View {
+    @State private var animatePulse = false
+    
     var body: some View {
         VStack(spacing: 20) {
             Spacer()
-            Image(systemName: "pawprint.circle")
-                .font(.system(size: 60))
-                .foregroundColor(AppColors.neutral300)
-            Text("No pets found")
-                .font(AppFonts.title3)
-                .foregroundColor(AppColors.textPrimary)
-            Text("Try adjusting your filters or search terms")
-                .font(AppFonts.bodyMedium)
-                .foregroundColor(AppColors.textSecondary)
-                .multilineTextAlignment(.center)
+            
+            ZStack {
+                Circle()
+                    .fill(AppColors.neutral100)
+                    .frame(width: 100, height: 100)
+                    .scaleEffect(animatePulse ? 1.1 : 1)
+                    .opacity(animatePulse ? 0.5 : 0.8)
+                
+                Image(systemName: "pawprint.circle")
+                    .font(.system(size: 50, weight: .light))
+                    .foregroundColor(AppColors.neutral400)
+            }
+            
+            VStack(spacing: 8) {
+                Text("No pets found")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(AppColors.textPrimary)
+                
+                Text("Try adjusting your filters or search terms")
+                    .font(.system(size: 14))
+                    .foregroundColor(AppColors.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+            
             Spacer()
         }
         .padding(40)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                animatePulse = true
+            }
+        }
     }
 }
 
 struct EmptyMyPetsView: View {
     @Binding var showAddPet: Bool
+    @State private var animateIcon = false
     
     var body: some View {
         VStack(spacing: 24) {
@@ -462,38 +627,64 @@ struct EmptyMyPetsView: View {
             ZStack {
                 Circle()
                     .fill(AppColors.primary100)
-                    .frame(width: 120, height: 120)
+                    .frame(width: 110, height: 110)
+                
+                Circle()
+                    .stroke(AppColors.primary200, lineWidth: 2)
+                    .frame(width: 130, height: 130)
+                    .scaleEffect(animateIcon ? 1.1 : 1)
+                    .opacity(animateIcon ? 0 : 0.6)
+                
                 Image(systemName: "plus.circle.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(AppColors.primary400)
+                    .font(.system(size: 50))
+                    .foregroundColor(AppColors.primary500)
             }
             
-            Text("No pets yet")
-                .font(AppFonts.title3)
-                .foregroundColor(AppColors.textPrimary)
+            VStack(spacing: 10) {
+                Text("No pets yet")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(AppColors.textPrimary)
+                
+                Text("Add your furry friends to keep track of them\nand easily book their stays!")
+                    .font(.system(size: 14))
+                    .foregroundColor(AppColors.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(3)
+            }
             
-            Text("Add your furry friends to keep track of them and easily book their stays!")
-                .font(AppFonts.bodyMedium)
-                .foregroundColor(AppColors.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            
-            Button(action: { showAddPet = true }) {
+            Button(action: {
+                showAddPet = true
+                HapticManager.impact(.medium)
+            }) {
                 HStack(spacing: 8) {
                     Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 16))
                     Text("Add My First Pet")
+                        .font(.system(size: 15, weight: .semibold))
                 }
-                .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 14)
-                .background(AppColors.primary700)
+                .background(
+                    LinearGradient(
+                        colors: [AppColors.primary600, AppColors.primary700],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
                 .cornerRadius(25)
+                .shadow(color: AppColors.primary700.opacity(0.3), radius: 8, x: 0, y: 4)
             }
+            .buttonStyle(PetScaleButtonStyle())
             
             Spacer()
         }
         .padding(20)
+        .onAppear {
+            withAnimation(.easeOut(duration: 1.5).repeatForever(autoreverses: false)) {
+                animateIcon = true
+            }
+        }
     }
 }
 
@@ -519,6 +710,13 @@ struct AddPetView: View {
     @State private var isLoading = false
     @State private var showValidationError = false
     @State private var validationMessage = ""
+    @State private var animateContent = false
+    
+    @FocusState private var focusedField: AddPetField?
+    
+    enum AddPetField {
+        case name, breed, age, customPersonality, customActivity
+    }
     
     let personalityOptions = ["Playful", "Calm", "Energetic", "Gentle", "Curious", "Affectionate", "Independent", "Friendly", "Shy", "Loyal", "Smart", "Mischievous", "Sweet", "Active", "Relaxed"]
     
@@ -533,15 +731,37 @@ struct AddPetView: View {
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 24) {
+                VStack(spacing: 20) {
                     photoSection
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                    
                     videoSection
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                        .animation(.easeOut(duration: 0.35).delay(0.05), value: animateContent)
+                    
                     basicInfoSection
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                        .animation(.easeOut(duration: 0.35).delay(0.1), value: animateContent)
+                    
                     personalitySection
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                        .animation(.easeOut(duration: 0.35).delay(0.15), value: animateContent)
+                    
                     activitiesSection
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                        .animation(.easeOut(duration: 0.35).delay(0.2), value: animateContent)
+                    
                     saveButton
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                        .animation(.easeOut(duration: 0.35).delay(0.25), value: animateContent)
                 }
-                .padding(20)
+                .padding(16)
                 .padding(.bottom, 40)
             }
             .background(AppColors.backgroundSecondary)
@@ -549,8 +769,20 @@ struct AddPetView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") { dismiss() }
-                        .foregroundColor(AppColors.textSecondary)
+                    Button(action: { dismiss() }) {
+                        Text("Cancel")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(AppColors.textSecondary)
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        focusedField = nil
+                    }
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(AppColors.primary600)
                 }
             }
             .onChange(of: selectedPhotos) { oldValue, newValue in
@@ -577,308 +809,429 @@ struct AddPetView: View {
             } message: {
                 Text(validationMessage)
             }
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.35)) {
+                    animateContent = true
+                }
+            }
         }
     }
     
     // MARK: - Photo Section
     private var photoSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Photos")
-                    .font(AppFonts.headline)
-                    .foregroundColor(AppColors.textPrimary)
-                Text("*").foregroundColor(AppColors.error)
-                Spacer()
-                Text("\(selectedImages.count)/10")
-                    .font(AppFonts.caption)
+        AddPetFormCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    HStack(spacing: 4) {
+                        Image(systemName: "photo.on.rectangle.angled")
+                            .font(.system(size: 14))
+                            .foregroundColor(AppColors.primary600)
+                        Text("Photos")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(AppColors.textPrimary)
+                        Text("*")
+                            .foregroundColor(AppColors.error)
+                    }
+                    Spacer()
+                    Text("\(selectedImages.count)/10")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(AppColors.textTertiary)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(AppColors.neutral100)
+                        .cornerRadius(8)
+                }
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        PhotosPicker(
+                            selection: $selectedPhotos,
+                            maxSelectionCount: 10 - selectedImages.count,
+                            matching: .images
+                        ) {
+                            VStack(spacing: 6) {
+                                ZStack {
+                                    Circle()
+                                        .fill(AppColors.primary100)
+                                        .frame(width: 36, height: 36)
+                                    Image(systemName: "plus")
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(AppColors.primary600)
+                                }
+                                Text("Add")
+                                    .font(.system(size: 10, weight: .medium))
+                                    .foregroundColor(AppColors.textSecondary)
+                            }
+                            .frame(width: 90, height: 90)
+                            .background(AppColors.primary50)
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(AppColors.primary300, style: StrokeStyle(lineWidth: 1.5, dash: [6]))
+                            )
+                        }
+                        
+                        ForEach(Array(selectedImages.enumerated()), id: \.offset) { index, image in
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 90, height: 90)
+                                    .clipped()
+                                    .cornerRadius(12)
+                                
+                                if index == 0 {
+                                    Text("Main")
+                                        .font(.system(size: 8, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 5)
+                                        .padding(.vertical, 2)
+                                        .background(
+                                            Capsule()
+                                                .fill(AppColors.primary600)
+                                        )
+                                        .offset(x: -4, y: 4)
+                                }
+                                
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.25)) {
+                                        selectedImages.remove(at: index)
+                                    }
+                                    HapticManager.impact(.light)
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.white)
+                                        .shadow(color: .black.opacity(0.3), radius: 2)
+                                }
+                                .offset(x: 6, y: -6)
+                            }
+                            .transition(.scale.combined(with: .opacity))
+                        }
+                    }
+                    .padding(.vertical, 2)
+                }
+                
+                Text("First photo will be the main profile picture")
+                    .font(.system(size: 11))
                     .foregroundColor(AppColors.textTertiary)
             }
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 10 - selectedImages.count, matching: .images) {
-                        VStack(spacing: 8) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(AppColors.primary600)
-                            Text("Add Photos")
-                                .font(AppFonts.caption)
-                                .foregroundColor(AppColors.textSecondary)
-                        }
-                        .frame(width: 100, height: 100)
-                        .background(AppColors.primary50)
-                        .cornerRadius(12)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.primary300, style: StrokeStyle(lineWidth: 2, dash: [5])))
-                    }
-                    
-                    ForEach(Array(selectedImages.enumerated()), id: \.offset) { index, image in
-                        ZStack(alignment: .topTrailing) {
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 100, height: 100)
-                                .clipped()
-                                .cornerRadius(12)
-                            
-                            if index == 0 {
-                                Text("Main")
-                                    .font(.system(size: 9, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(AppColors.primary700)
-                                    .cornerRadius(4)
-                                    .offset(x: -4, y: 4)
-                            }
-                            
-                            Button(action: { selectedImages.remove(at: index) }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.system(size: 22))
-                                    .foregroundColor(.white)
-                                    .background(Circle().fill(Color.black.opacity(0.5)))
-                            }
-                            .offset(x: 6, y: -6)
-                        }
-                    }
-                }
-                .padding(.vertical, 4)
-            }
-            
-            Text("First photo will be the main profile picture")
-                .font(AppFonts.caption)
-                .foregroundColor(AppColors.textTertiary)
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
     }
     
     // MARK: - Video Section
     private var videoSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Video")
-                    .font(AppFonts.headline)
-                    .foregroundColor(AppColors.textPrimary)
-                Text("(Optional)")
-                    .font(AppFonts.caption)
-                    .foregroundColor(AppColors.textTertiary)
-            }
-            
-            if selectedVideoURL != nil {
+        AddPetFormCard {
+            VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    HStack(spacing: 10) {
+                    HStack(spacing: 4) {
                         Image(systemName: "video.fill")
-                            .foregroundColor(AppColors.primary700)
-                        Text("Video selected")
-                            .font(AppFonts.bodyMedium)
+                            .font(.system(size: 13))
+                            .foregroundColor(AppColors.primary600)
+                        Text("Video")
+                            .font(.system(size: 15, weight: .semibold))
                             .foregroundColor(AppColors.textPrimary)
                     }
-                    Spacer()
-                    Button(action: {
-                        selectedVideoURL = nil
-                        selectedVideoItem = nil
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(AppColors.error)
-                    }
+                    Text("(Optional)")
+                        .font(.system(size: 12))
+                        .foregroundColor(AppColors.textTertiary)
                 }
-                .padding()
-                .background(AppColors.primary50)
-                .cornerRadius(12)
-            } else {
-                PhotosPicker(selection: $selectedVideoItem, matching: .videos) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "video.badge.plus")
-                            .font(.system(size: 20))
-                        Text("Add Video")
-                            .font(AppFonts.bodyMedium)
+                
+                if selectedVideoURL != nil {
+                    HStack {
+                        HStack(spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(AppColors.success.opacity(0.15))
+                                    .frame(width: 36, height: 36)
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(AppColors.success)
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Video selected")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(AppColors.textPrimary)
+                                Text("Ready to upload")
+                                    .font(.system(size: 11))
+                                    .foregroundColor(AppColors.textTertiary)
+                            }
+                        }
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.spring(response: 0.25)) {
+                                selectedVideoURL = nil
+                                selectedVideoItem = nil
+                            }
+                            HapticManager.impact(.light)
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 22))
+                                .foregroundColor(AppColors.neutral400)
+                        }
                     }
-                    .foregroundColor(AppColors.primary700)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(AppColors.primary50)
+                    .padding(12)
+                    .background(AppColors.success.opacity(0.08))
                     .cornerRadius(12)
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.primary300, style: StrokeStyle(lineWidth: 2, dash: [5])))
+                    .transition(.scale.combined(with: .opacity))
+                } else {
+                    PhotosPicker(selection: $selectedVideoItem, matching: .videos) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "video.badge.plus")
+                                .font(.system(size: 18))
+                            Text("Add Video")
+                                .font(.system(size: 14, weight: .medium))
+                        }
+                        .foregroundColor(AppColors.primary600)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(AppColors.primary50)
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(AppColors.primary300, style: StrokeStyle(lineWidth: 1.5, dash: [6]))
+                        )
+                    }
                 }
             }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
     }
     
     // MARK: - Basic Info Section
     private var basicInfoSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Basic Info")
-                .font(AppFonts.headline)
-                .foregroundColor(AppColors.textPrimary)
-            
-            // Pet Type
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Pet Type")
-                    .font(AppFonts.bodySmall)
-                    .foregroundColor(AppColors.textSecondary)
+        AddPetFormCard {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 4) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(AppColors.primary600)
+                    Text("Basic Info")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(AppColors.textPrimary)
+                }
                 
-                HStack(spacing: 12) {
-                    AddPetTypeSelector(type: .cat, isSelected: petType == .cat) { petType = .cat }
-                    AddPetTypeSelector(type: .dog, isSelected: petType == .dog) { petType = .dog }
-                }
-            }
-            
-            // Name
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("Name")
-                        .font(AppFonts.bodySmall)
+                // Pet Type
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Pet Type")
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(AppColors.textSecondary)
-                    Text("*").foregroundColor(AppColors.error)
+                    
+                    HStack(spacing: 10) {
+                        AddPetTypeSelector(
+                            type: .cat,
+                            isSelected: petType == .cat
+                        ) {
+                            withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
+                                petType = .cat
+                            }
+                            HapticManager.impact(.light)
+                        }
+                        
+                        AddPetTypeSelector(
+                            type: .dog,
+                            isSelected: petType == .dog
+                        ) {
+                            withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
+                                petType = .dog
+                            }
+                            HapticManager.impact(.light)
+                        }
+                    }
                 }
-                TextField("Enter pet's name", text: $petName)
-                    .font(AppFonts.bodyMedium)
-                    .padding()
-                    .background(AppColors.backgroundSecondary)
-                    .cornerRadius(12)
-            }
-            
-            // Breed
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("Breed")
-                        .font(AppFonts.bodySmall)
-                        .foregroundColor(AppColors.textSecondary)
-                    Text("*").foregroundColor(AppColors.error)
-                }
-                TextField("Enter breed", text: $petBreed)
-                    .font(AppFonts.bodyMedium)
-                    .padding()
-                    .background(AppColors.backgroundSecondary)
-                    .cornerRadius(12)
-            }
-            
-            // Age
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Age (Optional)")
-                    .font(AppFonts.bodySmall)
-                    .foregroundColor(AppColors.textSecondary)
-                TextField("e.g., 2 years, 6 months", text: $petAge)
-                    .font(AppFonts.bodyMedium)
-                    .padding()
-                    .background(AppColors.backgroundSecondary)
-                    .cornerRadius(12)
+                
+                // Name
+                AddPetTextField(
+                    title: "Name",
+                    placeholder: "Enter pet's name",
+                    text: $petName,
+                    isRequired: true,
+                    icon: "pawprint.fill"
+                )
+                .focused($focusedField, equals: .name)
+                
+                // Breed
+                AddPetTextField(
+                    title: "Breed",
+                    placeholder: "Enter breed",
+                    text: $petBreed,
+                    isRequired: true,
+                    icon: "tag.fill"
+                )
+                .focused($focusedField, equals: .breed)
+                
+                // Age
+                AddPetTextField(
+                    title: "Age",
+                    placeholder: "e.g., 2 years, 6 months",
+                    text: $petAge,
+                    isRequired: false,
+                    icon: "calendar"
+                )
+                .focused($focusedField, equals: .age)
             }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
     }
     
     // MARK: - Personality Section
     private var personalitySection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Personality")
-                .font(AppFonts.headline)
-                .foregroundColor(AppColors.textPrimary)
-            
-            PetFlowLayout(spacing: 8) {
-                ForEach(personalityOptions, id: \.self) { trait in
-                    PetSelectableChip(text: trait, isSelected: selectedPersonalities.contains(trait)) {
-                        if selectedPersonalities.contains(trait) {
-                            selectedPersonalities.remove(trait)
-                        } else {
-                            selectedPersonalities.insert(trait)
+        AddPetFormCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 4) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 14))
+                        .foregroundColor(AppColors.primary600)
+                    Text("Personality")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(AppColors.textPrimary)
+                }
+                
+                PetFlowLayout(spacing: 8) {
+                    ForEach(personalityOptions, id: \.self) { trait in
+                        PetSelectableChip(
+                            text: trait,
+                            isSelected: selectedPersonalities.contains(trait)
+                        ) {
+                            withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
+                                if selectedPersonalities.contains(trait) {
+                                    selectedPersonalities.remove(trait)
+                                } else {
+                                    selectedPersonalities.insert(trait)
+                                }
+                            }
+                            HapticManager.impact(.light)
                         }
                     }
                 }
-            }
-            
-            HStack {
-                TextField("Add custom trait", text: $customPersonality)
-                    .font(AppFonts.bodySmall)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
-                    .background(AppColors.backgroundSecondary)
-                    .cornerRadius(20)
                 
-                if !customPersonality.isEmpty {
-                    Button(action: {
-                        selectedPersonalities.insert(customPersonality)
-                        customPersonality = ""
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(AppColors.primary700)
+                HStack(spacing: 8) {
+                    TextField("Add custom trait", text: $customPersonality)
+                        .font(.system(size: 13))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .background(AppColors.neutral50)
+                        .cornerRadius(20)
+                        .focused($focusedField, equals: .customPersonality)
+                    
+                    if !customPersonality.isEmpty {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.25)) {
+                                selectedPersonalities.insert(customPersonality)
+                                customPersonality = ""
+                            }
+                            HapticManager.impact(.light)
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(AppColors.primary600)
+                        }
+                        .transition(.scale.combined(with: .opacity))
                     }
                 }
             }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
     }
     
     // MARK: - Activities Section
     private var activitiesSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Favorite Activities")
-                .font(AppFonts.headline)
-                .foregroundColor(AppColors.textPrimary)
-            
-            PetFlowLayout(spacing: 8) {
-                ForEach(activityOptions, id: \.self) { activity in
-                    PetSelectableChip(text: activity, isSelected: selectedActivities.contains(activity)) {
-                        if selectedActivities.contains(activity) {
-                            selectedActivities.remove(activity)
-                        } else {
-                            selectedActivities.insert(activity)
+        AddPetFormCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 4) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 13))
+                        .foregroundColor(AppColors.warning)
+                    Text("Favorite Activities")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(AppColors.textPrimary)
+                }
+                
+                PetFlowLayout(spacing: 8) {
+                    ForEach(activityOptions, id: \.self) { activity in
+                        PetSelectableChip(
+                            text: activity,
+                            isSelected: selectedActivities.contains(activity)
+                        ) {
+                            withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
+                                if selectedActivities.contains(activity) {
+                                    selectedActivities.remove(activity)
+                                } else {
+                                    selectedActivities.insert(activity)
+                                }
+                            }
+                            HapticManager.impact(.light)
                         }
                     }
                 }
-            }
-            
-            HStack {
-                TextField("Add custom activity", text: $customActivity)
-                    .font(AppFonts.bodySmall)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
-                    .background(AppColors.backgroundSecondary)
-                    .cornerRadius(20)
                 
-                if !customActivity.isEmpty {
-                    Button(action: {
-                        selectedActivities.insert(customActivity)
-                        customActivity = ""
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(AppColors.primary700)
+                HStack(spacing: 8) {
+                    TextField("Add custom activity", text: $customActivity)
+                        .font(.system(size: 13))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .background(AppColors.neutral50)
+                        .cornerRadius(20)
+                        .focused($focusedField, equals: .customActivity)
+                    
+                    if !customActivity.isEmpty {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.25)) {
+                                selectedActivities.insert(customActivity)
+                                customActivity = ""
+                            }
+                            HapticManager.impact(.light)
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(AppColors.primary600)
+                        }
+                        .transition(.scale.combined(with: .opacity))
                     }
                 }
             }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
     }
     
     // MARK: - Save Button
     private var saveButton: some View {
         Button(action: savePet) {
-            HStack {
+            HStack(spacing: 8) {
                 if isLoading {
-                    ProgressView().tint(.white)
+                    ProgressView()
+                        .tint(.white)
+                        .scaleEffect(0.9)
                 } else {
                     Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 16))
                     Text("Save Pet")
+                        .font(.system(size: 16, weight: .semibold))
                 }
             }
-            .font(.system(size: 17, weight: .semibold))
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(isValid ? AppColors.primary700 : AppColors.neutral400)
+            .padding(.vertical, 15)
+            .background(
+                Group {
+                    if isValid {
+                        LinearGradient(
+                            colors: [AppColors.primary600, AppColors.primary700],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    } else {
+                        Color(AppColors.neutral400)
+                    }
+                }
+            )
             .cornerRadius(14)
+            .shadow(
+                color: isValid ? AppColors.primary700.opacity(0.3) : Color.clear,
+                radius: 8,
+                x: 0,
+                y: 4
+            )
         }
         .disabled(!isValid || isLoading)
+        .buttonStyle(PetScaleButtonStyle())
         .padding(.top, 8)
     }
     
@@ -892,6 +1245,7 @@ struct AddPetView: View {
         }
         
         isLoading = true
+        HapticManager.impact(.medium)
         
         let petId = UUID().uuidString
         let dateFormatter = DateFormatter()
@@ -950,7 +1304,59 @@ struct VideoTransferable: Transferable {
     }
 }
 
-// MARK: - Add Pet Type Selector (renamed to avoid conflict with existing PetTypeButton)
+// MARK: - Add Pet Form Card
+struct AddPetFormCard<Content: View>: View {
+    @ViewBuilder let content: Content
+    
+    var body: some View {
+        content
+            .padding(16)
+            .background(Color.white)
+            .cornerRadius(14)
+            .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 2)
+    }
+}
+
+// MARK: - Add Pet Text Field
+struct AddPetTextField: View {
+    let title: String
+    let placeholder: String
+    @Binding var text: String
+    var isRequired: Bool = false
+    var icon: String? = nil
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 4) {
+                Text(title)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(AppColors.textSecondary)
+                if isRequired {
+                    Text("*")
+                        .foregroundColor(AppColors.error)
+                }
+            }
+            
+            HStack(spacing: 10) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 13))
+                        .foregroundColor(AppColors.neutral400)
+                }
+                
+                TextField(placeholder, text: $text)
+                    .font(.system(size: 14))
+                    .foregroundColor(AppColors.textPrimary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(AppColors.neutral50)
+            .cornerRadius(10)
+        }
+    }
+}
+
+// MARK: - Add Pet Type Selector
 struct AddPetTypeSelector: View {
     let type: Pet.PetType
     let isSelected: Bool
@@ -960,21 +1366,43 @@ struct AddPetTypeSelector: View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image(systemName: type.icon)
-                    .font(.system(size: 20))
+                    .font(.system(size: 18))
                 Text(type.displayName)
-                    .font(AppFonts.bodyMedium)
+                    .font(.system(size: 14, weight: .medium))
             }
             .foregroundColor(isSelected ? .white : AppColors.textPrimary)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(isSelected ? AppColors.primary700 : AppColors.backgroundSecondary)
+            .padding(.vertical, 13)
+            .background(
+                Group {
+                    if isSelected {
+                        LinearGradient(
+                            colors: [AppColors.primary600, AppColors.primary700],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    } else {
+                        Color(AppColors.neutral50)
+                    }
+                }
+            )
             .cornerRadius(12)
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(isSelected ? AppColors.primary700 : AppColors.border, lineWidth: 1))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isSelected ? Color.clear : AppColors.neutral200, lineWidth: 1)
+            )
+            .shadow(
+                color: isSelected ? AppColors.primary700.opacity(0.2) : Color.clear,
+                radius: 6,
+                x: 0,
+                y: 3
+            )
         }
+        .buttonStyle(PetScaleButtonStyle())
     }
 }
 
-// MARK: - Pet Selectable Chip (renamed to avoid conflicts)
+// MARK: - Pet Selectable Chip
 struct PetSelectableChip: View {
     let text: String
     let isSelected: Bool
@@ -983,14 +1411,30 @@ struct PetSelectableChip: View {
     var body: some View {
         Button(action: action) {
             Text(text)
-                .font(AppFonts.bodySmall)
+                .font(.system(size: 12, weight: .medium))
                 .foregroundColor(isSelected ? .white : AppColors.textSecondary)
-                .padding(.horizontal, 14)
+                .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background(isSelected ? AppColors.primary700 : AppColors.backgroundSecondary)
-                .cornerRadius(20)
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(isSelected ? Color.clear : AppColors.border, lineWidth: 1))
+                .background(
+                    Group {
+                        if isSelected {
+                            LinearGradient(
+                                colors: [AppColors.primary600, AppColors.primary700],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        } else {
+                            Color(AppColors.neutral50)
+                        }
+                    }
+                )
+                .cornerRadius(16)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(isSelected ? Color.clear : AppColors.neutral200, lineWidth: 1)
+                )
         }
+        .buttonStyle(PetScaleButtonStyle())
     }
 }
 
@@ -1004,6 +1448,7 @@ struct PetDetailView: View {
     @State private var showFullscreenGallery = false
     @State private var showVideoPlayer = false
     @State private var showDeleteConfirmation = false
+    @State private var animateContent = false
     
     var isUserPet: Bool {
         petDataManager.isUserPet(pet)
@@ -1030,9 +1475,13 @@ struct PetDetailView: View {
                                         .frame(maxWidth: .infinity)
                                         .clipped()
                                 } else {
-                                    LinearGradient(colors: [AppColors.primary300, AppColors.primary200], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    LinearGradient(
+                                        colors: [AppColors.primary200, AppColors.primary300],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
                                     Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
-                                        .font(.system(size: 80))
+                                        .font(.system(size: 70))
                                         .foregroundColor(AppColors.primary400.opacity(0.8))
                                 }
                             }
@@ -1040,33 +1489,58 @@ struct PetDetailView: View {
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
-                    .frame(height: 350)
+                    .frame(height: 380)
+                    
+                    // Gradient overlays
+                    VStack {
+                        LinearGradient(
+                            colors: [.black.opacity(0.4), .clear],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .frame(height: 120)
+                        
+                        Spacer()
+                        
+                        LinearGradient(
+                            colors: [.clear, .black.opacity(0.5)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .frame(height: 100)
+                    }
                     
                     // Top controls
-                    HStack {
+                    HStack(spacing: 10) {
                         Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 18, weight: .semibold))
+                                .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
-                                .padding(12)
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .fill(Color.black.opacity(0.3))
+                                        .blur(radius: 0.5)
+                                )
                         }
+                        .buttonStyle(PetScaleButtonStyle())
                         
                         Spacer()
                         
                         if isUserPet {
                             HStack(spacing: 4) {
                                 Image(systemName: "person.fill")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 10, weight: .semibold))
                                 Text("My Pet")
-                                    .font(.system(size: 12, weight: .medium))
+                                    .font(.system(size: 11, weight: .semibold))
                             }
                             .foregroundColor(.white)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(AppColors.info)
-                            .cornerRadius(20)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(
+                                Capsule()
+                                    .fill(AppColors.info)
+                            )
                         }
                         
                         Button(action: {
@@ -1074,12 +1548,16 @@ struct PetDetailView: View {
                             HapticManager.notification(.success)
                         }) {
                             Image(systemName: pet.isFavorite ? "heart.fill" : "heart")
-                                .font(.system(size: 18))
+                                .font(.system(size: 16))
                                 .foregroundColor(pet.isFavorite ? .red : .white)
-                                .padding(12)
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .fill(Color.black.opacity(0.3))
+                                        .blur(radius: 0.5)
+                                )
                         }
+                        .buttonStyle(PetScaleButtonStyle())
                         
                         if isUserPet {
                             Menu {
@@ -1092,25 +1570,32 @@ struct PetDetailView: View {
                                 }
                             } label: {
                                 Image(systemName: "ellipsis")
-                                    .font(.system(size: 18))
+                                    .font(.system(size: 16, weight: .medium))
                                     .foregroundColor(.white)
-                                    .padding(12)
-                                    .background(Color.black.opacity(0.3))
-                                    .clipShape(Circle())
+                                    .frame(width: 40, height: 40)
+                                    .background(
+                                        Circle()
+                                            .fill(Color.black.opacity(0.3))
+                                            .blur(radius: 0.5)
+                                    )
                             }
                         } else {
                             Button(action: { showShareSheet = true }) {
                                 Image(systemName: "square.and.arrow.up")
-                                    .font(.system(size: 18))
+                                    .font(.system(size: 15))
                                     .foregroundColor(.white)
-                                    .padding(12)
-                                    .background(Color.black.opacity(0.3))
-                                    .clipShape(Circle())
+                                    .frame(width: 40, height: 40)
+                                    .background(
+                                        Circle()
+                                            .fill(Color.black.opacity(0.3))
+                                            .blur(radius: 0.5)
+                                    )
                             }
+                            .buttonStyle(PetScaleButtonStyle())
                         }
                     }
-                    .padding()
-                    .padding(.top, 40)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 56)
                     
                     // Bottom controls
                     VStack {
@@ -1118,15 +1603,17 @@ struct PetDetailView: View {
                         HStack(alignment: .bottom) {
                             HStack(spacing: 4) {
                                 Image(systemName: "photo.stack")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 11))
                                 Text("\(selectedImageIndex + 1)/\(pet.images.count)")
-                                    .font(AppFonts.bodySmall)
+                                    .font(.system(size: 12, weight: .medium))
                             }
                             .foregroundColor(.white)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color.black.opacity(0.4))
-                            .cornerRadius(20)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(
+                                Capsule()
+                                    .fill(Color.black.opacity(0.4))
+                            )
                             
                             Spacer()
                             
@@ -1134,28 +1621,35 @@ struct PetDetailView: View {
                                 Button(action: { showVideoPlayer = true }) {
                                     HStack(spacing: 6) {
                                         Image(systemName: "play.circle.fill")
-                                            .font(.system(size: 16))
+                                            .font(.system(size: 14))
                                         Text("Watch Video")
-                                            .font(AppFonts.bodySmall)
+                                            .font(.system(size: 12, weight: .semibold))
                                     }
                                     .foregroundColor(.white)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 10)
-                                    .background(AppColors.primary700)
-                                    .cornerRadius(20)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        Capsule()
+                                            .fill(AppColors.primary600)
+                                    )
                                 }
+                                .buttonStyle(PetScaleButtonStyle())
                             }
                             
                             Button(action: { showFullscreenGallery = true }) {
                                 Image(systemName: "arrow.up.left.and.arrow.down.right")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: 13))
                                     .foregroundColor(.white)
-                                    .padding(10)
-                                    .background(Color.black.opacity(0.4))
-                                    .clipShape(Circle())
+                                    .frame(width: 34, height: 34)
+                                    .background(
+                                        Circle()
+                                            .fill(Color.black.opacity(0.4))
+                                    )
                             }
+                            .buttonStyle(PetScaleButtonStyle())
                         }
-                        .padding()
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 16)
                     }
                 }
                 
@@ -1163,112 +1657,144 @@ struct PetDetailView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(Array(pet.images.enumerated()), id: \.offset) { index, imageName in
-                            Button(action: { withAnimation { selectedImageIndex = index } }) {
+                            Button(action: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    selectedImageIndex = index
+                                }
+                                HapticManager.impact(.light)
+                            }) {
                                 ZStack {
                                     if isUserPet, let image = petDataManager.loadUserPetImage(named: imageName) {
                                         Image(uiImage: image)
                                             .resizable()
                                             .aspectRatio(contentMode: .fill)
-                                            .frame(width: 60, height: 60)
+                                            .frame(width: 56, height: 56)
                                             .clipped()
                                             .cornerRadius(10)
                                     } else if UIImage(named: imageName) != nil {
                                         Image(imageName)
                                             .resizable()
                                             .aspectRatio(contentMode: .fill)
-                                            .frame(width: 60, height: 60)
+                                            .frame(width: 56, height: 56)
                                             .clipped()
                                             .cornerRadius(10)
                                     } else {
                                         RoundedRectangle(cornerRadius: 10)
                                             .fill(AppColors.primary200)
-                                            .frame(width: 60, height: 60)
+                                            .frame(width: 56, height: 56)
                                         Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
-                                            .font(.system(size: 24))
+                                            .font(.system(size: 22))
                                             .foregroundColor(AppColors.primary400)
                                     }
                                 }
-                                .overlay(RoundedRectangle(cornerRadius: 10).stroke(selectedImageIndex == index ? AppColors.primary700 : Color.clear, lineWidth: 2))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(
+                                            selectedImageIndex == index ? AppColors.primary600 : Color.clear,
+                                            lineWidth: 2
+                                        )
+                                )
+                                .scaleEffect(selectedImageIndex == index ? 1.05 : 1)
                             }
+                            .buttonStyle(PetScaleButtonStyle())
                         }
                         
                         if pet.video != nil {
                             Button(action: { showVideoPlayer = true }) {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(LinearGradient(colors: [AppColors.primary700, AppColors.primary600], startPoint: .topLeading, endPoint: .bottomTrailing))
-                                        .frame(width: 80, height: 60)
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [AppColors.primary600, AppColors.primary700],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                        .frame(width: 72, height: 56)
                                     
-                                    VStack(spacing: 4) {
+                                    VStack(spacing: 3) {
                                         ZStack {
                                             Circle()
-                                                .fill(Color.white.opacity(0.9))
-                                                .frame(width: 28, height: 28)
+                                                .fill(Color.white)
+                                                .frame(width: 26, height: 26)
                                             Image(systemName: "play.fill")
-                                                .font(.system(size: 12))
+                                                .font(.system(size: 10))
                                                 .foregroundColor(AppColors.primary700)
                                                 .offset(x: 1)
                                         }
                                         Text("Video")
-                                            .font(.system(size: 9, weight: .medium))
+                                            .font(.system(size: 9, weight: .semibold))
                                             .foregroundColor(.white)
                                     }
                                 }
                             }
+                            .buttonStyle(PetScaleButtonStyle())
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, 16)
                     .padding(.vertical, 12)
                 }
                 .background(Color.white)
                 
                 // Pet info
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 20) {
+                    // Header
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(pet.name)
-                                .font(AppFonts.largeTitle)
+                                .font(.system(size: 26, weight: .bold))
                                 .foregroundColor(AppColors.textPrimary)
                             Text(pet.breed)
-                                .font(AppFonts.bodyLarge)
+                                .font(.system(size: 15))
                                 .foregroundColor(AppColors.textSecondary)
                             if let age = pet.age {
                                 Text(age)
-                                    .font(AppFonts.bodySmall)
+                                    .font(.system(size: 13))
                                     .foregroundColor(AppColors.textTertiary)
                             }
                         }
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(x: animateContent ? 0 : -10)
                         
                         Spacer()
                         
                         HStack(spacing: 6) {
                             Circle()
                                 .fill(pet.status.color)
-                                .frame(width: 8, height: 8)
+                                .frame(width: 7, height: 7)
                             Text(pet.status.displayName)
-                                .font(AppFonts.bodySmall)
+                                .font(.system(size: 12, weight: .medium))
                                 .foregroundColor(pet.status.color)
                         }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(pet.status.color.opacity(0.1))
-                        .cornerRadius(20)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(pet.status.color.opacity(0.12))
+                        .cornerRadius(16)
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(x: animateContent ? 0 : 10)
                     }
                     
                     // Media summary
-                    HStack(spacing: 16) {
+                    HStack(spacing: 12) {
                         PetMediaBadge(icon: "photo.stack", text: "\(pet.images.count) Photos")
                         if pet.video != nil {
                             PetMediaBadge(icon: "video.fill", text: "1 Video", isHighlighted: true)
                         }
                     }
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 10)
                     
                     // Personality
                     if !pet.personality.isEmpty {
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Personality")
-                                .font(AppFonts.headline)
-                                .foregroundColor(AppColors.textPrimary)
+                            HStack(spacing: 6) {
+                                Image(systemName: "sparkles")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(AppColors.primary600)
+                                Text("Personality")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .foregroundColor(AppColors.textPrimary)
+                            }
                             
                             PetFlowLayout(spacing: 8) {
                                 ForEach(pet.personality, id: \.self) { trait in
@@ -1276,53 +1802,75 @@ struct PetDetailView: View {
                                 }
                             }
                         }
+                        .padding(14)
+                        .background(Color.white)
+                        .cornerRadius(14)
+                        .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 2)
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 10)
                     }
                     
                     // Favorite Activities
                     if !pet.favoriteActivities.isEmpty {
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Favorite Activities")
-                                .font(AppFonts.headline)
-                                .foregroundColor(AppColors.textPrimary)
+                            HStack(spacing: 6) {
+                                Image(systemName: "star.fill")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(AppColors.warning)
+                                Text("Favorite Activities")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .foregroundColor(AppColors.textPrimary)
+                            }
                             
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 10) {
                                 ForEach(pet.favoriteActivities, id: \.self) { activity in
-                                    HStack(spacing: 12) {
-                                        Image(systemName: "star.fill")
-                                            .font(.system(size: 12))
-                                            .foregroundColor(AppColors.warning)
+                                    HStack(spacing: 10) {
+                                        Circle()
+                                            .fill(AppColors.warning.opacity(0.2))
+                                            .frame(width: 6, height: 6)
                                         Text(activity)
-                                            .font(AppFonts.bodyMedium)
+                                            .font(.system(size: 14))
                                             .foregroundColor(AppColors.textSecondary)
                                     }
                                 }
                             }
                         }
+                        .padding(14)
+                        .background(Color.white)
+                        .cornerRadius(14)
+                        .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 2)
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 10)
                     }
                     
                     // Joined date
                     HStack(spacing: 8) {
                         Image(systemName: "calendar")
+                            .font(.system(size: 13))
                             .foregroundColor(AppColors.textTertiary)
                         Text("Joined \(formatDate(pet.joinedDate))")
-                            .font(AppFonts.bodySmall)
+                            .font(.system(size: 13))
                             .foregroundColor(AppColors.textTertiary)
                     }
+                    .opacity(animateContent ? 1 : 0)
                     
                     // Delete button for user pets
                     if isUserPet {
                         Button(action: { showDeleteConfirmation = true }) {
-                            HStack {
+                            HStack(spacing: 8) {
                                 Image(systemName: "trash")
+                                    .font(.system(size: 14))
                                 Text("Delete Pet")
+                                    .font(.system(size: 14, weight: .medium))
                             }
-                            .font(AppFonts.bodyMedium)
                             .foregroundColor(AppColors.error)
                             .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(AppColors.error.opacity(0.1))
+                            .padding(.vertical, 14)
+                            .background(AppColors.error.opacity(0.08))
                             .cornerRadius(12)
                         }
+                        .buttonStyle(PetScaleButtonStyle())
+                        .opacity(animateContent ? 1 : 0)
                     }
                 }
                 .padding(20)
@@ -1349,6 +1897,11 @@ struct PetDetailView: View {
         } message: {
             Text("Are you sure you want to delete \(pet.name)? This action cannot be undone.")
         }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.4).delay(0.1)) {
+                animateContent = true
+            }
+        }
     }
     
     func formatDate(_ dateString: String) -> String {
@@ -1363,7 +1916,7 @@ struct PetDetailView: View {
     }
 }
 
-// MARK: - Pet Media Badge (renamed)
+// MARK: - Pet Media Badge
 struct PetMediaBadge: View {
     let icon: String
     let text: String
@@ -1372,34 +1925,34 @@ struct PetMediaBadge: View {
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: icon)
-                .font(.system(size: 12))
+                .font(.system(size: 11))
             Text(text)
-                .font(AppFonts.bodySmall)
+                .font(.system(size: 12, weight: .medium))
         }
         .foregroundColor(isHighlighted ? AppColors.primary700 : AppColors.textSecondary)
         .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.vertical, 7)
         .background(isHighlighted ? AppColors.primary100 : AppColors.neutral100)
-        .cornerRadius(20)
+        .cornerRadius(16)
     }
 }
 
-// MARK: - Pet Personality Tag (renamed)
+// MARK: - Pet Personality Tag
 struct PetPersonalityTag: View {
     let trait: String
     
     var body: some View {
         Text(trait)
-            .font(AppFonts.bodySmall)
+            .font(.system(size: 12, weight: .medium))
             .foregroundColor(AppColors.primary700)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(AppColors.primary100)
-            .cornerRadius(20)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(AppColors.primary50)
+            .cornerRadius(14)
     }
 }
 
-// MARK: - Pet Fullscreen Gallery View (renamed)
+// MARK: - Pet Fullscreen Gallery View
 struct PetFullscreenGalleryView: View {
     let pet: Pet
     @State var selectedIndex: Int
@@ -1427,7 +1980,7 @@ struct PetFullscreenGalleryView: View {
                                 .aspectRatio(contentMode: .fit)
                         } else {
                             Image(systemName: pet.type == .cat ? "cat.fill" : "dog.fill")
-                                .font(.system(size: 100))
+                                .font(.system(size: 80))
                                 .foregroundColor(AppColors.primary400)
                         }
                     }
@@ -1441,19 +1994,19 @@ struct PetFullscreenGalleryView: View {
                     Spacer()
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 32))
+                            .font(.system(size: 30))
                             .foregroundColor(.white.opacity(0.8))
                     }
                     .padding()
                 }
                 Spacer()
                 
-                VStack(spacing: 8) {
+                VStack(spacing: 6) {
                     Text(pet.name)
-                        .font(AppFonts.title2)
+                        .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                     Text("\(selectedIndex + 1) of \(pet.images.count)")
-                        .font(AppFonts.bodySmall)
+                        .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.7))
                 }
                 .padding(.bottom, 40)
@@ -1462,7 +2015,7 @@ struct PetFullscreenGalleryView: View {
     }
 }
 
-// MARK: - Pet Video Player View (renamed)
+// MARK: - Pet Video Player View
 struct PetVideoPlayerView: View {
     let pet: Pet
     @EnvironmentObject var petDataManager: PetDataManager
@@ -1485,36 +2038,46 @@ struct PetVideoPlayerView: View {
             } else if isLoading {
                 VStack(spacing: 20) {
                     ProgressView()
-                        .scaleEffect(1.5)
+                        .scaleEffect(1.3)
                         .tint(AppColors.primary500)
                     Text("Loading video...")
-                        .font(AppFonts.bodyMedium)
+                        .font(.system(size: 14))
                         .foregroundColor(.white.opacity(0.7))
                 }
             } else {
-                VStack(spacing: 24) {
-                    Image(systemName: "video.slash")
-                        .font(.system(size: 60))
-                        .foregroundColor(AppColors.neutral400)
-                    Text("Video Not Found")
-                        .font(AppFonts.headline)
-                        .foregroundColor(.white)
-                    if let error = errorMessage {
-                        Text(error)
-                            .font(AppFonts.bodySmall)
-                            .foregroundColor(.white.opacity(0.6))
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 40)
+                VStack(spacing: 20) {
+                    ZStack {
+                        Circle()
+                            .fill(AppColors.neutral800)
+                            .frame(width: 80, height: 80)
+                        Image(systemName: "video.slash")
+                            .font(.system(size: 32))
+                            .foregroundColor(AppColors.neutral500)
                     }
+                    
+                    VStack(spacing: 6) {
+                        Text("Video Not Found")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.white)
+                        if let error = errorMessage {
+                            Text(error)
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.5))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 40)
+                        }
+                    }
+                    
                     Button(action: { dismiss() }) {
                         Text("Close")
-                            .font(AppFonts.bodyMedium)
+                            .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
                             .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(AppColors.primary700)
+                            .padding(.vertical, 10)
+                            .background(AppColors.primary600)
                             .cornerRadius(20)
                     }
+                    .buttonStyle(PetScaleButtonStyle())
                 }
             }
             
@@ -1526,9 +2089,9 @@ struct PetVideoPlayerView: View {
                         dismiss()
                     }) {
                         Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 32))
+                            .font(.system(size: 30))
                             .foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.5), radius: 4)
+                            .shadow(color: .black.opacity(0.4), radius: 4)
                     }
                     .padding(.trailing, 20)
                     .padding(.top, 60)
@@ -1608,7 +2171,7 @@ struct PetVideoPlayerView: View {
     }
 }
 
-// MARK: - Pet Flow Layout (renamed to avoid conflicts)
+// MARK: - Pet Flow Layout
 struct PetFlowLayout: Layout {
     var spacing: CGFloat = 8
     
@@ -1650,7 +2213,7 @@ struct PetFlowLayout: Layout {
     }
 }
 
-// MARK: - Pet Share Sheet (renamed)
+// MARK: - Pet Share Sheet
 struct PetShareSheet: UIViewControllerRepresentable {
     let items: [Any]
     
