@@ -110,13 +110,13 @@ struct AuthView: View {
     }
 }
 
-// MARK: - Auth Success Overlay
+// MARK: - Auth Success Overlay (⭐ 使用inner-logo)
 struct AuthSuccessOverlay: View {
     let userName: String
     @State private var showCheck = false
     @State private var showText = false
-    @State private var showPaw = false
-    @State private var pawOffset: CGFloat = 0
+    @State private var showLogo = false
+    @State private var logoOffset: CGFloat = 0
     @State private var circleScale: CGFloat = 0
     @State private var ringScale: CGFloat = 0
     @State private var confettiTrigger = false
@@ -134,7 +134,7 @@ struct AuthSuccessOverlay: View {
             
             // Main content
             VStack(spacing: 24) {
-                // Animated check mark with paw
+                // Animated check mark with logo
                 ZStack {
                     // Outer ring
                     Circle()
@@ -162,12 +162,11 @@ struct AuthSuccessOverlay: View {
                         .scaleEffect(circleScale)
                         .shadow(color: AppColors.primary500.opacity(0.5), radius: 20, x: 0, y: 10)
                     
-                    // Paw print icon
-                    if showPaw {
-                        Image(systemName: "pawprint.fill")
-                            .font(.system(size: 50, weight: .medium))
-                            .foregroundColor(.white)
-                            .offset(y: pawOffset)
+                    // ⭐ Logo (使用inner-logo替代pawprint)
+                    if showLogo {
+                        LogoImage(name: "inner-logo", size: 80)
+                            .clipShape(Circle())
+                            .offset(y: logoOffset)
                     }
                     
                     // Check mark
@@ -230,19 +229,19 @@ struct AuthSuccessOverlay: View {
             }
         }
         
-        // Step 3: Paw appears and bounces
+        // Step 3: Logo appears and bounces
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            showPaw = true
-            pawOffset = -10
+            showLogo = true
+            logoOffset = -10
             withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
-                pawOffset = 0
+                logoOffset = 0
             }
         }
         
-        // Step 4: Paw transforms to check
+        // Step 4: Logo transforms to check
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
             withAnimation(.easeInOut(duration: 0.2)) {
-                showPaw = false
+                showLogo = false
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
@@ -383,7 +382,7 @@ struct AuthBackground: View {
     }
 }
 
-// MARK: - Auth Header
+// MARK: - Auth Header (⭐ 使用inner-logo)
 struct AuthHeader: View {
     @Binding var animate: Bool
     let isSignIn: Bool
@@ -391,7 +390,7 @@ struct AuthHeader: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            // Logo
+            // Logo - 使用inner-logo
             ZStack {
                 // Glow effect
                 Circle()
@@ -410,15 +409,9 @@ struct AuthHeader: View {
                     .frame(width: 95, height: 95)
                     .shadow(color: AppColors.primary700.opacity(0.2), radius: 20, x: 0, y: 10)
                 
-                Image(systemName: "pawprint.fill")
-                    .font(.system(size: 40, weight: .medium))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [AppColors.primary500, AppColors.primary700],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                // ⭐ 使用inner-logo替换pawprint
+                LogoImage(name: "inner-logo", size: 85)
+                    .clipShape(Circle())
             }
             .offset(y: logoFloat)
             .scaleEffect(animate ? 1 : 0.8)

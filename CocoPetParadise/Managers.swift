@@ -792,7 +792,7 @@ class CommunityManager: ObservableObject {
 }
 
 // ============================================================
-// MARK: - DIARY MANAGER
+// MARK: - DIARY MANAGER (Enhanced with 12 Pet Entries)
 // ============================================================
 
 class DiaryManager: ObservableObject {
@@ -835,27 +835,186 @@ class DiaryManager: ObservableObject {
     
     func setupSampleEntries() {
         entries = [
+            // Entry 1 - Bibi (Munchkin Silver Shaded) - Playful
             DiaryEntry(
                 petId: "cat-1",
                 petName: "Bibi",
                 authorId: "coco",
                 authorName: "Coco",
-                title: "Bibi's Playful Morning",
-                content: "Bibi had the most adorable morning today! She discovered a new sunny spot by the window and spent hours watching birds. When playtime came around, she was extra energetic and pounced on every toy in sight. Her little munchkin legs are just the cutest! 🐱☀️",
+                title: "Bibi's Sunbeam Adventures ☀️",
+                content: "Today was absolutely magical for our little Bibi! She discovered a new sunny spot by the bay window and claimed it as her personal kingdom. Watching her stretch out those adorable short legs while basking in the warmth was the highlight of my morning. When playtime came around, she was extra energetic and pounced on every feather toy in sight. Her signature munchkin waddle-run had everyone laughing! She even tried to catch her own tail for a solid 10 minutes – pure entertainment! 🐱✨",
                 mood: .playful,
-                createdAt: Date().addingTimeInterval(-43200),
-                likes: 15
+                createdAt: Date().addingTimeInterval(-7200),
+                likes: 42
             ),
+            
+            // Entry 2 - Dudu (British Shorthair Golden) - Relaxed
             DiaryEntry(
                 petId: "cat-2",
                 petName: "Dudu",
                 authorId: "coco",
                 authorName: "Coco",
-                title: "Dudu's Spa Day",
-                content: "Today was grooming day for our golden boy Dudu! He was such a patient gentleman during his brushing session. His coat is looking extra fluffy and shiny now. After all that pampering, he took a well-deserved nap on his favorite cushion. 💛✨",
+                title: "Dudu's Royal Spa Day 👑",
+                content: "Our distinguished gentleman Dudu received the royal treatment today! His grooming session was nothing short of luxurious – a thorough brushing that left his golden coat absolutely magnificent. He sat perfectly still like the patient prince he is, occasionally giving me slow blinks of approval. After all that pampering, he retreated to his favorite velvet cushion by the fireplace and napped for three glorious hours. The way the afternoon light caught his fur made him look like a golden treasure. What a distinguished boy! 💛✨",
                 mood: .relaxed,
+                createdAt: Date().addingTimeInterval(-21600),
+                likes: 56
+            ),
+            
+            // Entry 3 - Oscar (Golden Retriever Puppy) - Excited
+            DiaryEntry(
+                petId: "dog-1",
+                petName: "Oscar",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Oscar Masters 'Sit' and 'Paw'! 🎓",
+                content: "HUGE milestone for our golden boy Oscar today! After a week of patient training sessions, he finally mastered both 'sit' and 'give paw' commands! The moment it clicked for him, his whole body wiggled with excitement – that tail was going at helicopter speed! He was so proud of himself, and honestly, so were we. To celebrate, he got extra playtime with his favorite tennis ball and made three new friends during group socialization. His puppy energy is absolutely contagious, and Nova has become his best buddy. They're inseparable! 🐕🎾💕",
+                mood: .excited,
+                createdAt: Date().addingTimeInterval(-43200),
+                likes: 78
+            ),
+            
+            // Entry 4 - Fifi (Golden British Shorthair) - Curious
+            DiaryEntry(
+                petId: "cat-3",
+                petName: "Fifi",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "The Great Box Investigation 📦",
+                content: "Little detective Fifi embarked on her most important mission yet – investigating a mysterious cardboard box that appeared in the play room! She spent a solid 30 minutes circling it from every possible angle, ears perked forward, whiskers twitching with intense concentration. Every time she gathered enough courage to peek inside, she'd jump back dramatically as if it might come alive. Finally, after what felt like an eternity of deliberation, she conquered her fears and hopped right in for a victory nap. The look of triumph on her face was priceless! If it fits, she sits – and she sat like a champion! 😸📦",
+                mood: .curious,
+                createdAt: Date().addingTimeInterval(-64800),
+                likes: 63
+            ),
+            
+            // Entry 5 - Nova (Golden Retriever) - Happy
+            DiaryEntry(
+                petId: "dog-8",
+                petName: "Nova",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Nova's Splash-tacular Pool Day 🏊",
+                content: "What a day for our water-loving Nova! We set up the splash pool and she absolutely LIVED her best life. Being a Golden Retriever, water is basically her element – she dove in without a moment's hesitation and spent hours practicing her retrieval skills. The splashes she made were legendary; I'm pretty sure she baptized everyone within a 10-foot radius with her enthusiastic shake-offs! After swimming, she did her classic full-body shake that somehow managed to get water EVERYWHERE. Her happy, goofy smile with water dripping from her ears was pure joy captured in a moment. 💦🐕✨",
+                mood: .happy,
                 createdAt: Date().addingTimeInterval(-86400),
-                likes: 23
+                likes: 89
+            ),
+            
+            // Entry 6 - Meimei (Ragdoll) - Cuddly
+            DiaryEntry(
+                petId: "cat-4",
+                petName: "Meimei",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Meimei's Cuddle Marathon 🥰",
+                content: "Sweet, sweet Meimei has been extra cuddly today, and I am absolutely here for it! This beautiful Ragdoll literally melted into my arms during our afternoon snuggle session, living up to her breed's 'ragdoll' reputation perfectly. She's been purring non-stop – that deep, rumbling purr that you can feel vibrating through your chest when you hold her. She spent the entire afternoon making biscuits on every soft surface she could find, including my lap, a pile of freshly washed towels, and her favorite fleece blanket. Pure love in the fluffiest, most huggable form! 💕🐱",
+                mood: .cuddly,
+                createdAt: Date().addingTimeInterval(-108000),
+                likes: 95
+            ),
+            
+            // Entry 7 - Haha (Samoyed) - Happy
+            DiaryEntry(
+                petId: "dog-9",
+                petName: "Haha",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Haha Lives Up to His Name! 😊",
+                content: "Our fluffy cloud prince Haha truly earned his name today with that permanent, heartwarming smile that makes everyone melt! He greeted every single visitor with enthusiastic tail wags and that signature Samoyed grin that could brighten even the gloomiest day. His pristine white coat got SO many compliments – one guest said he looked like a walking marshmallow, and honestly, that's the most accurate description ever. He soaked up all the attention like a true celebrity, giving gentle nose boops to anyone who knelt down to his level. Pure happiness in fluffy form! ☁️😊💕",
+                mood: .happy,
+                createdAt: Date().addingTimeInterval(-129600),
+                likes: 112
+            ),
+            
+            // Entry 8 - Neon (Ragdoll) - Sleepy
+            DiaryEntry(
+                petId: "cat-5",
+                petName: "Neon",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Neon's Elegant Afternoon Siesta 😴",
+                content: "Our sophisticated beauty Neon has mastered the art of napping in style! Today she found the most elegant sleeping position ever – draped across the top tier of the cat tree like a fluffy waterfall, one paw dangling gracefully over the edge. Even in sleep, she looks like a model posing for a high-fashion photoshoot. Her soft snores and occasional whisker twitches (dream hunting, perhaps?) made for the most peaceful afternoon viewing. She slept for four solid hours in that exact position without moving an inch. Sweet dreams, pretty girl – you've earned your beauty rest! 💤✨",
+                mood: .sleepy,
+                createdAt: Date().addingTimeInterval(-151200),
+                likes: 67
+            ),
+            
+            // Entry 9 - Loki (Greyhound) - Playful
+            DiaryEntry(
+                petId: "dog-2",
+                petName: "Loki",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Loki's Legendary Zoomies 💨",
+                content: "Loki the Greyhound reminded everyone today why his breed was built for speed! During free play time, he absolutely ZOOMED around the yard with such velocity he was practically a blur. The other dogs just stood there, mouths open, trying to figure out how anything could move that fast. After about fifteen minutes of championship-level sprinting, he did the most classic Greyhound thing ever – went from 60 to 0 in seconds and transformed into a complete couch potato. He spent the rest of the afternoon stretched out on the sofa, all four legs extended, completely zonked out. From speedster to sleepy boi in record time! 🏃‍♂️💨😴",
+                mood: .playful,
+                createdAt: Date().addingTimeInterval(-172800),
+                likes: 84
+            ),
+            
+            // Entry 10 - Yaya (Black Cat) - Playful
+            DiaryEntry(
+                petId: "cat-11",
+                petName: "Yaya",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Yaya's Midnight Magic 🌙",
+                content: "Our mysterious midnight beauty Yaya has been living her best spooky-season life! As twilight approached, she transformed into the ultimate shadow ninja, stalking toys with laser-like focus and executing surprise attacks from impossible hiding spots. Those striking golden eyes glowing in the dim light gave her an absolutely magical appearance – like a tiny panther on the prowl. She's discovered that the evening hours are HER time to shine (or rather, blend into the shadows). Her stealth skills are honestly impressive; one moment she's there, the next she's vanished, only to reappear moments later with a toy mouse proudly carried in her mouth. Queen of the night! 🐈‍⬛✨🌙",
+                mood: .playful,
+                createdAt: Date().addingTimeInterval(-194400),
+                likes: 71
+            ),
+            
+            // Entry 11 - Toast (Standard Poodle) - Excited
+            DiaryEntry(
+                petId: "dog-11",
+                petName: "Toast",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Toast Graduates Top of Her Class! 🎓",
+                content: "INCREDIBLE training session with our brilliant Toast today! This Standard Poodle continues to amaze everyone with her exceptional intelligence – she learned THREE new tricks in just one session! Spin, play dead, and weave through legs – all mastered within an hour. The concentration in her eyes during training is something else; you can practically see the gears turning in her curly head. Her elegant victory prancing after each successful trick was the cutest celebration dance I've ever witnessed. She struts around like she knows she's the smartest one in the room (she probably is). Top marks for our clever girl! 🩰🎓💕",
+                mood: .excited,
+                createdAt: Date().addingTimeInterval(-216000),
+                likes: 93
+            ),
+            
+            // Entry 12 - Xiabao (Ragdoll) - Hungry
+            DiaryEntry(
+                petId: "cat-6",
+                petName: "Xiabao",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Xiabao's Treat Time Theatrics 🍽️",
+                content: "The drama that unfolded when the treat jar came out today was OSCAR-WORTHY! Xiabao's gorgeous blue eyes went absolutely enormous – like anime character big – the moment she heard that familiar lid twist. She deployed her most powerful weapon: the pleading face, complete with gentle head tilts and soft meows that could melt even the coldest heart. How could anyone resist? She earned her extra treats fair and square with that performance! The best part was watching her share a snack moment with her neighbor Meimei – they sat side by side, munching away in perfect harmony. Treat time is definitely bonding time in our house! 😻🍽️💕",
+                mood: .hungry,
+                createdAt: Date().addingTimeInterval(-237600),
+                likes: 58
+            ),
+            
+            // Entry 13 - Caicai (Shiba Inu) - Curious
+            DiaryEntry(
+                petId: "dog-6",
+                petName: "Caicai",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Caicai's Independent Adventure 🗺️",
+                content: "Our spirited Shiba Caicai embarked on an independent exploration mission today, and watching her investigate every corner of the play area was pure entertainment! True to her breed's reputation, she approached everything with that classic Shiba attitude – a mix of supreme confidence and adorable skepticism. She discovered a new puzzle toy and spent nearly an hour figuring it out, refusing any help with determined Shiba stubbornness. When she finally got the treats out, the triumphant look on her face said it all: 'I did this MYSELF, thank you very much.' That sassy personality and gorgeous red coat make her absolutely unforgettable! 🐕‍🦺😎✨",
+                mood: .curious,
+                createdAt: Date().addingTimeInterval(-259200),
+                likes: 76
+            ),
+            
+            // Entry 14 - Chouchou (Orange Tabby) - Relaxed
+            DiaryEntry(
+                petId: "cat-13",
+                petName: "Chouchou",
+                authorId: "coco",
+                authorName: "Coco",
+                title: "Chouchou's Perfect Lazy Day 🍞",
+                content: "Our magnificent orange loaf Chouchou achieved peak relaxation today – and honestly, we should all aspire to his level of chill! This gorgeous tabby has perfected the art of doing absolutely nothing while looking absolutely adorable. He spent most of the day in his signature 'loaf position' – all paws tucked neatly underneath, eyes half-closed in pure contentment. His favorite activities today: eating (obviously, it's Chouchou), sleeping, receiving belly rubs from anyone willing to offer, and eating again. That round orange belly got all the scratches it deserved. Living the dream, one nap at a time! 🧡😴🍞",
+                mood: .relaxed,
+                createdAt: Date().addingTimeInterval(-280800),
+                likes: 88
             ),
         ]
         saveEntries()
@@ -1110,10 +1269,6 @@ class ActivityTrackingManager: ObservableObject {
 // ============================================================
 
 struct SampleData {
-    // 24 pets matching the asset folders exactly:
-    // bibi, caicai, chacha, chouchou, dudu, ergou, fifi, haha, jiujiu, loki, meimei, mia-cat
-    // mia-dog, nana, neon, nova, oscar, richard, tata, toast, tutu, xiabao, xianbei, yaya
-    
     static let pets: [Pet] = [
             // ===== CATS (13) =====
             Pet(id: "cat-1", name: "Bibi", type: .cat, breed: "Munchkin Silver Shaded", age: nil,

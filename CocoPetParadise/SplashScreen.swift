@@ -2,23 +2,58 @@
 //  SplashScreen.swift
 //  CocoPetParadise
 //
-//  Elegant loading screen with custom logo support
+//  Premium splash screen with custom illustration logo
 //
 
 import SwiftUI
 
+// MARK: - Logo Image Component (可复用)
+struct LogoImage: View {
+    let name: String
+    let size: CGFloat
+    
+    var body: some View {
+        Group {
+            if UIImage(named: name) != nil {
+                Image(name)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else {
+                // Fallback - 如果图片不存在显示占位符
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [AppColors.primary400, AppColors.primary600],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                    Image(systemName: "pawprint.fill")
+                        .font(.system(size: size * 0.4))
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .frame(width: size, height: size)
+    }
+}
+
+// MARK: - Splash Screen
 struct SplashScreen: View {
-    @State private var logoScale: CGFloat = 0.5
+    @State private var isActive = false
+    @State private var logoScale: CGFloat = 0.6
     @State private var logoOpacity: Double = 0
-    @State private var ringScale: CGFloat = 0.8
-    @State private var ringOpacity: Double = 0
-    @State private var textOpacity: Double = 0
-    @State private var showPulse = false
+    @State private var ringRotation: Double = 0
+    @State private var showRing = false
+    @State private var showText = false
+    @State private var textOffset: CGFloat = 30
     @State private var floatingOffset: CGFloat = 0
+    @State private var pulseScale: CGFloat = 1.0
     
     var body: some View {
         ZStack {
-            // Elegant gradient background
+            // Background gradient
             LinearGradient(
                 colors: [
                     AppColors.primary100,
@@ -30,103 +65,123 @@ struct SplashScreen: View {
             )
             .ignoresSafeArea()
             
-            // Subtle floating shapes
+            // Decorative background circles
             GeometryReader { geo in
                 Circle()
                     .fill(AppColors.primary200.opacity(0.3))
                     .frame(width: 200, height: 200)
                     .blur(radius: 60)
-                    .offset(x: -50, y: floatingOffset + 50)
+                    .offset(x: -50, y: 100)
                 
                 Circle()
                     .fill(AppColors.primary300.opacity(0.2))
-                    .frame(width: 250, height: 250)
-                    .blur(radius: 70)
-                    .offset(x: geo.size.width - 120, y: geo.size.height - 300 - floatingOffset)
+                    .frame(width: 150, height: 150)
+                    .blur(radius: 50)
+                    .offset(x: geo.size.width - 80, y: geo.size.height - 300)
             }
             
-            // Main content
-            VStack(spacing: 0) {
+            VStack(spacing: 30) {
                 Spacer()
                 
-                // Logo container
+                // Main logo area - 增大整体尺寸
                 ZStack {
-                    // Outer pulse ring
-                    Circle()
-                        .stroke(AppColors.primary300.opacity(0.2), lineWidth: 1)
-                        .frame(width: 160, height: 160)
-                        .scaleEffect(showPulse ? 1.4 : 1)
-                        .opacity(showPulse ? 0 : 0.6)
-                    
-                    // Inner ring
-                    Circle()
-                        .stroke(
-                            LinearGradient(
-                                colors: [AppColors.primary400, AppColors.primary200],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 2
-                        )
-                        .frame(width: 130, height: 130)
-                        .scaleEffect(ringScale)
-                        .opacity(ringOpacity)
-                    
-                    // Logo glow
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                colors: [AppColors.primary200.opacity(0.5), Color.clear],
-                                center: .center,
-                                startRadius: 20,
-                                endRadius: 60
-                            )
-                        )
-                        .frame(width: 120, height: 120)
-                        .opacity(logoOpacity)
-                    
-                    // Logo Image - Add "app-logo" to Assets.xcassets
-                    LogoImage(name: "app-logo", size: 80)
-                        .scaleEffect(logoScale)
-                        .opacity(logoOpacity)
-                }
-                .offset(y: floatingOffset * 0.3)
-                
-                Spacer().frame(height: 40)
-                
-                // App name
-                VStack(spacing: 8) {
-                    Text("Coco's Pet Paradise")
-                        .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundColor(AppColors.textPrimary)
-                    
-                    Text("Premium Pet Care")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(AppColors.textSecondary)
-                        .tracking(1)
-                }
-                .opacity(textOpacity)
-                .offset(y: textOpacity == 1 ? 0 : 15)
-                
-                Spacer()
-                
-                // Elegant loading dots
-                HStack(spacing: 6) {
+                    // Pulse rings - 增大
                     ForEach(0..<3, id: \.self) { index in
                         Circle()
-                            .fill(AppColors.primary500)
-                            .frame(width: 8, height: 8)
-                            .opacity(textOpacity)
-                            .scaleEffect(showPulse ? 1 : 0.6)
+                            .stroke(AppColors.primary300.opacity(0.3), lineWidth: 2)
+                            .frame(width: 200 + CGFloat(index * 45), height: 200 + CGFloat(index * 45))
+                            .scaleEffect(pulseScale)
+                            .opacity(2.0 - pulseScale)
                             .animation(
-                                .easeInOut(duration: 0.5)
-                                .repeatForever(autoreverses: true)
-                                .delay(Double(index) * 0.15),
-                                value: showPulse
+                                .easeOut(duration: 2)
+                                .repeatForever(autoreverses: false)
+                                .delay(Double(index) * 0.4),
+                                value: pulseScale
                             )
                     }
+                    
+                    // Rotating gradient ring - 增大
+                    if showRing {
+                        Circle()
+                            .stroke(
+                                AngularGradient(
+                                    colors: [
+                                        AppColors.primary300,
+                                        AppColors.primary500,
+                                        AppColors.primary700,
+                                        AppColors.primary500,
+                                        AppColors.primary300
+                                    ],
+                                    center: .center
+                                ),
+                                lineWidth: 4
+                            )
+                            .frame(width: 190, height: 190)
+                            .rotationEffect(.degrees(ringRotation))
+                    }
+                    
+                    // White background circle for logo - 增大
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [.white, AppColors.primary50],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 175, height: 175)
+                        .shadow(color: AppColors.primary700.opacity(0.25), radius: 25, x: 0, y: 12)
+                    
+                    // ⭐ 自定义插画Logo - 增大尺寸到160
+                    LogoImage(name: "inner-logo", size: 160)
+                        .clipShape(Circle())
+                        .scaleEffect(logoScale)
+                        .opacity(logoOpacity)
+                        .offset(y: floatingOffset)
                 }
-                .padding(.bottom, 80)
+                
+                // App name and tagline
+                VStack(spacing: 12) {
+                    // "Paradise" text with gradient
+                    Text("Coco's Pet Paradise")
+                        .font(.system(size: 42, weight: .bold, design: .rounded))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [AppColors.primary600, AppColors.primary800],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    
+                    Text("Premium Pet Care")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(AppColors.textSecondary)
+                        .tracking(2)
+                }
+                .opacity(showText ? 1 : 0)
+                .offset(y: showText ? 0 : textOffset)
+                
+                Spacer()
+                
+                // Loading indicator
+                if showText {
+                    HStack(spacing: 8) {
+                        ForEach(0..<3, id: \.self) { index in
+                            Circle()
+                                .fill(AppColors.primary500)
+                                .frame(width: 10, height: 10)
+                                .scaleEffect(showText ? 1 : 0.5)
+                                .animation(
+                                    .easeInOut(duration: 0.6)
+                                    .repeatForever()
+                                    .delay(Double(index) * 0.2),
+                                    value: showText
+                                )
+                        }
+                    }
+                    .padding(.bottom, 60)
+                    .transition(.opacity)
+                }
             }
         }
         .onAppear {
@@ -135,61 +190,40 @@ struct SplashScreen: View {
     }
     
     private func startAnimations() {
-        withAnimation(.spring(response: 0.7, dampingFraction: 0.6)) {
-            logoScale = 1
-            logoOpacity = 1
+        // Logo entrance
+        withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+            logoScale = 1.0
+            logoOpacity = 1.0
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            withAnimation(.easeOut(duration: 0.5)) {
-                ringScale = 1
-                ringOpacity = 1
+        // Ring appearance
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            withAnimation(.easeOut(duration: 0.6)) {
+                showRing = true
+            }
+            
+            // Start ring rotation
+            withAnimation(.linear(duration: 8).repeatForever(autoreverses: false)) {
+                ringRotation = 360
             }
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            withAnimation(.easeOut(duration: 0.5)) {
-                textOpacity = 1
+        // Text appearance
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+                showText = true
             }
-            showPulse = true
         }
         
+        // Start floating animation
         withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
-            floatingOffset = 15
+            floatingOffset = -8
         }
-    }
-}
-
-// MARK: - Logo Image Component
-struct LogoImage: View {
-    let name: String
-    let size: CGFloat
-    
-    var body: some View {
-        Group {
-            if UIImage(named: name) != nil {
-                Image(name)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                // Fallback - shows when "app-logo" not in Assets
-                ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [AppColors.primary700, AppColors.primary600],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    
-                    Image(systemName: "pawprint.fill")
-                        .font(.system(size: size * 0.45))
-                        .foregroundColor(.white)
-                }
-            }
+        
+        // Start pulse animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            pulseScale = 1.5
         }
-        .frame(width: size, height: size)
     }
 }
 
